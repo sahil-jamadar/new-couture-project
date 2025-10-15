@@ -1,10 +1,20 @@
-import { useState, useEffect } from "react";
+import { Product } from "@/components/ProductCard";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Minus, Plus, Trash2, ArrowLeft } from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import { Product } from "@/components/ProductCard";
+import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
+import { ArrowLeft, Minus, Plus, Trash2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface CartItem extends Product {
   quantity: number;
@@ -13,7 +23,9 @@ interface CartItem extends Product {
 export const Cart = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { isLoggedIn } = useAuth();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [showLoginDialog, setShowLoginDialog] = useState(false);
 
   useEffect(() => {
     // Load cart from localStorage
@@ -180,9 +192,35 @@ export const Cart = () => {
                     </span>
                   </div>
                 </div>
-                <Button className="w-full bg-primary hover:bg-primary/90 shadow-premium">
+                <Button 
+                  className="w-full bg-primary hover:bg-primary/90 shadow-premium"
+                  onClick={() => {
+                    if (!isLoggedIn) {
+                      setShowLoginDialog(true);
+                    } else {
+                      // Handle checkout process
+                      console.log("Proceeding to checkout");
+                    }
+                  }}
+                >
                   Proceed to Checkout
                 </Button>
+                
+                <AlertDialog open={showLoginDialog} onOpenChange={setShowLoginDialog}>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Login Required</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Please login to your account to proceed with the checkout process.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogAction onClick={() => navigate('/login')}>
+                        Go to Login
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </CardContent>
             </Card>
           </div>

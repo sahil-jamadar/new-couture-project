@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
-import { Search, ShoppingCart, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useAuth } from "@/contexts/AuthContext";
+import { Menu, Search, ShoppingCart, User, X } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface HeaderProps {
@@ -14,6 +15,7 @@ export const Header = ({ cartItemCount, onSearchChange }: HeaderProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const { isLoggedIn, logout } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -109,6 +111,26 @@ export const Header = ({ cartItemCount, onSearchChange }: HeaderProps) => {
             )}
           </Button>
 
+          {isLoggedIn ? (
+            <Button
+              variant="ghost"
+              className="hidden md:flex gap-2 items-center"
+              onClick={logout}
+            >
+              <User className="h-5 w-5" />
+              Logout
+            </Button>
+          ) : (
+            <Button
+              variant="ghost"
+              className="hidden md:flex gap-2 items-center"
+              onClick={() => navigate('/login')}
+            >
+              <User className="h-5 w-5" />
+              Login
+            </Button>
+          )}
+
           {/* Mobile Menu Button */}
           <Button
             variant="ghost"
@@ -147,6 +169,21 @@ export const Header = ({ cartItemCount, onSearchChange }: HeaderProps) => {
                   {item.label}
                 </button>
               ))}
+              {isLoggedIn ? (
+                <button
+                  onClick={logout}
+                  className="text-left px-4 py-2 text-sm font-medium text-foreground/80 hover:text-primary hover:bg-secondary/50 rounded-md transition-smooth"
+                >
+                  Logout
+                </button>
+              ) : (
+                <button
+                  onClick={() => navigate('/login')}
+                  className="text-left px-4 py-2 text-sm font-medium text-foreground/80 hover:text-primary hover:bg-secondary/50 rounded-md transition-smooth"
+                >
+                  Login
+                </button>
+              )}
             </nav>
           </div>
         )}

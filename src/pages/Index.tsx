@@ -1,14 +1,17 @@
-import { useState, useMemo } from "react";
+import { BrandCarousel } from "@/components/BrandCarousel";
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
-import { ProductSection } from "@/components/ProductSection";
-import { BrandCarousel } from "@/components/BrandCarousel";
 import { Product } from "@/components/ProductCard";
-import { cottonProducts, trouserProducts, ethnicProducts, brands } from "@/data/products";
+import { ProductSection } from "@/components/ProductSection";
+import { ScrollingBanner } from "@/components/ScrollingBanner";
+import { TailoringServiceForm } from "@/components/TailoringServiceForm";
+import { brands, cottonProducts, ethnicProducts, trouserProducts } from "@/data/products";
 import { useToast } from "@/hooks/use-toast";
+import { useMemo, useState } from "react";
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [isTailoringFormOpen, setIsTailoringFormOpen] = useState(false);
   const { toast } = useToast();
 
   // Get cart from localStorage to display count
@@ -81,6 +84,13 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <Header cartItemCount={cartCount} onSearchChange={setSearchQuery} />
       <Hero />
+      
+      <ScrollingBanner onBannerClick={() => setIsTailoringFormOpen(true)} />
+      
+      <TailoringServiceForm 
+        isOpen={isTailoringFormOpen}
+        onClose={() => setIsTailoringFormOpen(false)}
+      />
       
       <ProductSection
         id="cotton-collection"

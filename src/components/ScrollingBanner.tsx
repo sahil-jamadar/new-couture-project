@@ -30,7 +30,7 @@ export const ScrollingBanner = ({ onBannerClick }: ScrollingBannerProps) => {
   return (
     <div 
       onClick={onBannerClick}
-      className="bg-gradient-to-r from-primary/90 to-primary py-3 overflow-hidden relative cursor-pointer hover:from-primary hover:to-primary/90 transition-colors mt-16"
+      className="bg-gradient-to-r from-purple-500 to-pink-500 py-4 overflow-hidden relative cursor-pointer hover:from-purple-600 hover:to-pink-600 transition-colors mt-16 shadow-lg"
     >
       <style>
         {`

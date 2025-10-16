@@ -1,16 +1,16 @@
-import { Product } from "@/components/ProductCard";
 import cottonImage from "@/assets/cotton-fabric.jpg";
-import trouserImage from "@/assets/trouser-fabric.jpg";
 import ethnicImage from "@/assets/ethnic-fabric.jpg";
+import trouserImage from "@/assets/trouser-fabric.jpg";
+import { Product } from "@/components/ProductCard";
 
 export const cottonProducts: Product[] = [
   {
-    id: "cotton-1",
-    name: "Textured Printed Cotton",
-    description: "Lines Unstitched Shirt Fabric with elegant texture",
-    price: 1299,
+    id: "linen-60-lee",
+    name: "100% Linen-60 Lee",
+    description: "Unstitched breathable shirt fabric",
+    price: 1599,
     image: cottonImage,
-    material: "Premium Cotton Blend",
+    material: "100% Pure Linen",
   },
   {
     id: "cotton-2",
@@ -30,6 +30,14 @@ export const cottonProducts: Product[] = [
   },
   {
     id: "cotton-4",
+    name: "Italian Cotton Dobby",
+    description: "Designer weave shirt fabric with sophisticated pattern",
+    price: 2299,
+    image: cottonImage,
+    material: "Italian Cotton Dobby",
+  },
+  {
+    id: "cotton-giza",
     name: "Western Giza Cotton",
     description: "80x80 Satin Soft Fabric for premium shirts",
     price: 2199,
@@ -46,8 +54,8 @@ export const cottonProducts: Product[] = [
   },
   {
     id: "cotton-6",
-    name: "100% Linen-60 Lee",
-    description: "Unstitched breathable shirt fabric",
+    name: "Pure Linen Premium",
+    description: "Unstitched breathable premium linen fabric",
     price: 1899,
     image: cottonImage,
     material: "Pure Linen",
@@ -105,19 +113,19 @@ export const cottonProducts: Product[] = [
 export const trouserProducts: Product[] = [
   {
     id: "trouser-1",
-    name: "Popcorn Armani Fabric",
-    description: "Unstitched trouser fabric with unique texture",
-    price: 1799,
+    name: "Premium Wool Blend",
+    description: "Formal trouser fabric with excellent drape",
+    price: 2199,
     image: trouserImage,
-    material: "Armani Premium",
+    material: "Wool Blend",
   },
   {
     id: "trouser-2",
-    name: "Armani 19000",
-    description: "Unstitched premium trouser fabric",
+    name: "Cotton Stretch Fabric",
+    description: "Comfortable trouser material with stretch",
     price: 1999,
     image: trouserImage,
-    material: "Armani 19000",
+    material: "Cotton Stretch Blend",
   },
   {
     id: "trouser-3",
@@ -180,19 +188,19 @@ export const trouserProducts: Product[] = [
 export const ethnicProducts: Product[] = [
   {
     id: "ethnic-1",
-    name: "Indo-Western Suit Fabric",
-    description: "Premium unstitched fabric for contemporary suits",
-    price: 3499,
+    name: "Silk Brocade Premium",
+    description: "Traditional ethnic wear fabric with intricate patterns",
+    price: 2899,
     image: ethnicImage,
-    material: "Art Silk Blend",
+    material: "Pure Silk Brocade",
   },
   {
     id: "ethnic-2",
-    name: "Modi Jacket Fabric",
-    description: "Elegant fabric for traditional Modi jackets",
+    name: "Handloom Cotton Khadi",
+    description: "Artisan crafted ethnic fabric",
     price: 2999,
     image: ethnicImage,
-    material: "Brocade Silk",
+    material: "Handloom Cotton Khadi",
   },
   {
     id: "ethnic-3",

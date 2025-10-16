@@ -1,4 +1,4 @@
-import { ProductCard, Product } from "./ProductCard";
+import { Product, ProductCard } from "./ProductCard";
 
 interface ProductSectionProps {
   id: string;
@@ -16,14 +16,14 @@ export const ProductSection = ({
   onAddToCart,
 }: ProductSectionProps) => {
   return (
-    <section id={id} className="py-20 scroll-mt-24">
+    <section id={id} className="py-20 scroll-mt-24 bg-dark-gradient">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12 animate-fade-in">
-          <h2 className="font-playfair text-3xl md:text-5xl font-bold text-foreground mb-4">
+          <h2 className="font-playfair text-3xl md:text-5xl font-bold text-gradient-purple mb-4">
             {title}
           </h2>
           {subtitle && (
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-lg text-dark-secondary max-w-2xl mx-auto">
               {subtitle}
             </p>
           )}

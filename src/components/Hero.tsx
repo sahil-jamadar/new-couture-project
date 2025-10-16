@@ -18,10 +18,10 @@ export const Hero = () => {
   };
 
   return (
-    <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-dark-gradient">
       {/* Background Image with Parallax Effect */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/40" /> {/* Enhanced overlay for text visibility */}
+        <div className="absolute inset-0 bg-gradient-to-r from-purple-900/80 to-pink-900/70" /> {/* Dark overlay */}
         <img
           src={heroImage}
           alt="Fashion influencers showcasing premium styles"
@@ -30,20 +30,20 @@ export const Hero = () => {
             animation: 'subtle-zoom 20s infinite alternate',
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/50 via-black/30 to-red-900/40" />
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-600/40 via-purple-600/30 to-pink-600/40" />
       </div>
 
       {/* Content */}
       <div className="container mx-auto px-4 z-10 text-center md:text-left max-w-6xl">
         <div className="max-w-3xl animate-fade-in">
-          <p className="text-accent font-medium text-sm md:text-base tracking-widest uppercase mb-4 text-yellow-400">
+          <p className="text-accent font-medium text-sm md:text-base tracking-widest uppercase mb-4 text-purple-300">
             Inspired by Fashion Icons
           </p>
           <h1 className="font-playfair text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-white leading-tight drop-shadow-xl">
             Elevate Your Style<br />
-            <span className="text-primary bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">With The Best</span>
+            <span className="text-gradient-purple">With The Best</span>
           </h1>
-          <p className="text-lg md:text-xl text-gray-200 mb-8 max-w-2xl leading-relaxed drop-shadow-lg">
+          <p className="text-lg md:text-xl text-gray-100 mb-8 max-w-2xl leading-relaxed drop-shadow-lg">
             Join the fashion revolution with our curated collection of premium fabrics. From runway-inspired designs to timeless classics.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">

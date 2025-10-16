@@ -1,7 +1,8 @@
+import { SearchWithSuggestions } from "@/components/SearchWithSuggestions";
+import ThemeToggle from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { useAuth } from "@/contexts/AuthContext";
-import { Menu, Search, ShoppingCart, User, X } from "lucide-react";
+import { Menu, ShoppingCart, User, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -53,22 +54,26 @@ export const Header = ({ cartItemCount, onSearchChange }: HeaderProps) => {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-smooth ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? "bg-background/95 backdrop-blur-md shadow-elegant"
+          ? "bg-background/95 backdrop-blur-md shadow-lg shadow-purple-900/30"
           : "bg-background/80 backdrop-blur-sm"
       }`}
     >
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between gap-4">
-          {/* Logo */}
-          <div className="flex-shrink-0">
-            <button
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              className="text-2xl font-playfair font-bold text-primary hover:opacity-80 transition-smooth"
-            >
-              The Coutures
-            </button>
+          {/* Theme Toggle - Top Left */}
+          <div className="flex items-center gap-4">
+            <ThemeToggle />
+            {/* Logo */}
+            <div className="flex-shrink-0">
+              <button
+                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                className="text-2xl font-playfair font-bold text-gradient-purple hover:opacity-80 transition-all"
+              >
+                The Coutures
+              </button>
+            </div>
           </div>
 
           {/* Desktop Navigation */}
@@ -77,22 +82,18 @@ export const Header = ({ cartItemCount, onSearchChange }: HeaderProps) => {
               <button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
-                className="text-sm font-medium text-foreground/80 hover:text-primary transition-smooth"
+                className="text-sm font-medium text-dark-secondary hover:text-primary transition-smooth"
               >
                 {item.label}
               </button>
             ))}
           </nav>
 
-          {/* Search Bar */}
-          <div className="hidden md:flex flex-1 max-w-md relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              type="text"
-              placeholder="Search fabrics..."
-              value={searchQuery}
-              onChange={(e) => handleSearch(e.target.value)}
-              className="pl-10 bg-secondary/50 border-border/50 focus:bg-card transition-smooth"
+          {/* Enhanced Search Bar */}
+          <div className="hidden md:flex flex-1 max-w-md">
+            <SearchWithSuggestions 
+              onSearchChange={handleSearch}
+              initialValue={searchQuery}
             />
           </div>
 
@@ -149,14 +150,10 @@ export const Header = ({ cartItemCount, onSearchChange }: HeaderProps) => {
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
           <div className="md:hidden mt-4 pb-4 space-y-4 animate-fade-in">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                type="text"
-                placeholder="Search fabrics..."
-                value={searchQuery}
-                onChange={(e) => handleSearch(e.target.value)}
-                className="pl-10 bg-secondary/50"
+            <div className="mb-4">
+              <SearchWithSuggestions 
+                onSearchChange={handleSearch}
+                initialValue={searchQuery}
               />
             </div>
             <nav className="flex flex-col gap-2">
@@ -164,7 +161,7 @@ export const Header = ({ cartItemCount, onSearchChange }: HeaderProps) => {
                 <button
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
-                  className="text-left px-4 py-2 text-sm font-medium text-foreground/80 hover:text-primary hover:bg-secondary/50 rounded-md transition-smooth"
+                  className="text-left px-4 py-2 text-sm font-medium text-dark-secondary hover:text-primary hover:bg-card/50 rounded-md transition-smooth"
                 >
                   {item.label}
                 </button>
@@ -172,14 +169,14 @@ export const Header = ({ cartItemCount, onSearchChange }: HeaderProps) => {
               {isLoggedIn ? (
                 <button
                   onClick={logout}
-                  className="text-left px-4 py-2 text-sm font-medium text-foreground/80 hover:text-primary hover:bg-secondary/50 rounded-md transition-smooth"
+                  className="text-left px-4 py-2 text-sm font-medium text-dark-secondary hover:text-primary hover:bg-card/50 rounded-md transition-smooth"
                 >
                   Logout
                 </button>
               ) : (
                 <button
                   onClick={() => navigate('/login')}
-                  className="text-left px-4 py-2 text-sm font-medium text-foreground/80 hover:text-primary hover:bg-secondary/50 rounded-md transition-smooth"
+                  className="text-left px-4 py-2 text-sm font-medium text-dark-secondary hover:text-primary hover:bg-card/50 rounded-md transition-smooth"
                 >
                   Login
                 </button>

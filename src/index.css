@@ -29,82 +29,100 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Couture Premium Color System */
-    --background: 30 20% 98%;
-    --foreground: 20 15% 20%;
+    /* Light Theme Color System - Purple & Pink Gradient */
+    --background: 260 100% 98%;
+    --foreground: 240 25% 15%;
 
     --card: 0 0% 100%;
-    --card-foreground: 20 15% 20%;
+    --card-foreground: 240 25% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 20 15% 20%;
+    --popover-foreground: 240 25% 15%;
 
-    /* Deep burgundy for premium accents */
-    --primary: 0 45% 35%;
-    --primary-foreground: 30 20% 98%;
+    /* Purple-Pink gradient primary */
+    --primary: 260 85% 60%;
+    --primary-foreground: 0 0% 100%;
 
-    /* Warm cream for secondary elements */
-    --secondary: 35 30% 92%;
-    --secondary-foreground: 20 15% 20%;
+    /* Light secondary with purple tint */
+    --secondary: 260 30% 95%;
+    --secondary-foreground: 240 25% 15%;
 
-    /* Soft neutral for muted elements */
-    --muted: 30 15% 90%;
-    --muted-foreground: 20 10% 45%;
+    /* Muted light elements */
+    --muted: 260 30% 94%;
+    --muted-foreground: 240 15% 50%;
 
-    /* Gold accent for luxury touches */
-    --accent: 45 80% 55%;
-    --accent-foreground: 20 15% 20%;
+    /* Pink accent */
+    --accent: 320 85% 65%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 30 20% 98%;
+    --destructive: 0 85% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 30 20% 88%;
-    --input: 30 20% 88%;
-    --ring: 0 45% 35%;
+    --border: 260 30% 90%;
+    --input: 260 30% 94%;
+    --ring: 260 85% 60%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
-    /* Gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(30 20% 98%) 0%, hsl(35 25% 95%) 100%);
-    --gradient-premium: linear-gradient(135deg, hsl(0 45% 35%) 0%, hsl(0 50% 25%) 100%);
-    --gradient-gold: linear-gradient(135deg, hsl(45 80% 55%) 0%, hsl(40 75% 50%) 100%);
+    /* Light Theme Gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(260 100% 98%) 0%, hsl(320 100% 96%) 100%);
+    --gradient-premium: linear-gradient(135deg, hsl(260 85% 60%) 0%, hsl(320 85% 65%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(260 30% 95%) 0%, hsl(320 30% 97%) 100%);
+    --gradient-card: linear-gradient(135deg, hsl(0 0% 100%) 0%, hsl(260 30% 98%) 100%);
     
-    /* Shadows */
-    --shadow-elegant: 0 4px 24px -2px hsl(20 15% 20% / 0.08);
-    --shadow-premium: 0 8px 32px -4px hsl(0 45% 35% / 0.15);
+    /* Light Shadows */
+    --shadow-elegant: 0 4px 24px -2px hsl(260 30% 20% / 0.08);
+    --shadow-premium: 0 8px 32px -4px hsl(260 30% 30% / 0.15);
+    --shadow-glow: 0 0 20px hsl(260 85% 60% / 0.15);
     
     /* Transitions */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .dark {
-    --background: 20 20% 12%;
-    --foreground: 30 20% 95%;
+    /* Dark Theme Color System - Purple & Pink Gradient */
+    --background: 240 15% 8%;
+    --foreground: 260 15% 92%;
 
-    --card: 20 20% 15%;
-    --card-foreground: 30 20% 95%;
+    --card: 240 12% 12%;
+    --card-foreground: 260 15% 90%;
 
-    --popover: 20 20% 15%;
-    --popover-foreground: 30 20% 95%;
+    --popover: 240 12% 15%;
+    --popover-foreground: 260 15% 90%;
 
-    --primary: 0 55% 45%;
-    --primary-foreground: 30 20% 98%;
+    /* Purple-Pink gradient primary */
+    --primary: 260 85% 65%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 20 15% 22%;
-    --secondary-foreground: 30 20% 95%;
+    /* Dark secondary with purple tint */
+    --secondary: 240 15% 18%;
+    --secondary-foreground: 260 15% 85%;
 
-    --muted: 20 15% 20%;
-    --muted-foreground: 30 10% 60%;
+    /* Muted dark elements */
+    --muted: 240 12% 15%;
+    --muted-foreground: 260 10% 65%;
 
-    --accent: 45 75% 60%;
-    --accent-foreground: 20 15% 15%;
+    /* Pink accent */
+    --accent: 320 85% 70%;
+    --accent-foreground: 240 15% 10%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 30 20% 98%;
+    --destructive: 0 85% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 20 15% 25%;
-    --input: 20 15% 25%;
-    --ring: 0 55% 45%;
+    --border: 240 15% 20%;
+    --input: 240 12% 16%;
+    --ring: 260 85% 65%;
+
+    /* Dark Theme Gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(240 15% 12%) 0%, hsl(260 20% 15%) 100%);
+    --gradient-premium: linear-gradient(135deg, hsl(260 85% 65%) 0%, hsl(320 85% 70%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(260 60% 25%) 0%, hsl(320 60% 30%) 100%);
+    --gradient-card: linear-gradient(135deg, hsl(240 12% 14%) 0%, hsl(260 15% 16%) 100%);
+    
+    /* Dark Shadows */
+    --shadow-elegant: 0 4px 24px -2px hsl(240 15% 5% / 0.3);
+    --shadow-premium: 0 8px 32px -4px hsl(260 30% 10% / 0.4);
+    --shadow-glow: 0 0 20px hsl(260 85% 65% / 0.15);
   }
 }
 
@@ -118,6 +136,19 @@ All colors MUST be HSL.
     font-feature-settings: "kern" 1, "liga" 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Ensure all elements have proper dark theme contrast */
+  .dark-text {
+    @apply text-foreground;
+  }
+  
+  .dark-bg {
+    @apply bg-background;
+  }
+
+  .dark-card {
+    @apply bg-card text-card-foreground;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -135,8 +166,12 @@ All colors MUST be HSL.
     background: var(--gradient-premium);
   }
   
-  .gradient-gold {
-    background: var(--gradient-gold);
+  .gradient-accent {
+    background: var(--gradient-accent);
+  }
+
+  .gradient-card {
+    background: var(--gradient-card);
   }
   
   .shadow-elegant {
@@ -146,8 +181,32 @@ All colors MUST be HSL.
   .shadow-premium {
     box-shadow: var(--shadow-premium);
   }
+
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
   
   .transition-smooth {
     transition: var(--transition-smooth);
+  }
+
+  /* Dark theme specific utilities */
+  .bg-dark-gradient {
+    background: linear-gradient(135deg, hsl(240 15% 10%) 0%, hsl(260 20% 12%) 100%);
+  }
+
+  .text-dark-primary {
+    color: hsl(260 15% 90%);
+  }
+
+  .text-dark-secondary {
+    color: hsl(260 10% 70%);
+  }
+
+  .text-gradient-purple {
+    background: linear-gradient(135deg, hsl(260 85% 75%) 0%, hsl(320 85% 80%) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 }

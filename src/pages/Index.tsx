@@ -1,6 +1,7 @@
 import { BrandCarousel } from "@/components/BrandCarousel";
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
+import { MixedCollection } from "@/components/MixedCollection";
 import { Product } from "@/components/ProductCard";
 import { ProductSection } from "@/components/ProductSection";
 import { ScrollingBanner } from "@/components/ScrollingBanner";
@@ -80,6 +81,13 @@ const Index = () => {
   const filteredTrouser = useMemo(() => filterProducts(trouserProducts), [searchQuery]);
   const filteredEthnic = useMemo(() => filterProducts(ethnicProducts), [searchQuery]);
 
+  // Create mixed collection with 8 random products from all collections
+  const mixedProducts = useMemo(() => {
+    const allProducts = [...cottonProducts, ...trouserProducts, ...ethnicProducts];
+    const shuffled = allProducts.sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, 8);
+  }, []);
+
   return (
     <div className="min-h-screen bg-background">
       <Header cartItemCount={cartCount} onSearchChange={setSearchQuery} />
@@ -90,6 +98,13 @@ const Index = () => {
       <TailoringServiceForm 
         isOpen={isTailoringFormOpen}
         onClose={() => setIsTailoringFormOpen(false)}
+      />
+      
+      <MixedCollection
+        id="featured-collection"
+        title="Featured Collection Highlights"
+        subtitle="Explore our curated selection of premium fabrics from across all collections"
+        products={mixedProducts}
       />
       
       <ProductSection

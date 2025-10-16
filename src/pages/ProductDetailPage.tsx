@@ -1,3 +1,4 @@
+import { Header } from "@/components/Header";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -14,6 +15,20 @@ const ProductDetailPage = () => {
   const [selectedColor, setSelectedColor] = useState<string>("");
   const [quantity, setQuantity] = useState(1);
   const [product, setProduct] = useState<any>(null);
+
+  // Get cart from localStorage to display count
+  const getCartItemCount = () => {
+    try {
+      const cart = localStorage.getItem("coutures-cart");
+      if (cart) {
+        const items = JSON.parse(cart);
+        return items.reduce((sum: number, item: any) => sum + item.quantity, 0);
+      }
+    } catch (e) {
+      return 0;
+    }
+    return 0;
+  };
 
   useEffect(() => {
     if (productId) {
@@ -100,38 +115,41 @@ const ProductDetailPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-pink-50">
-      {/* Enhanced Header */}
-      <div className="bg-white/95 backdrop-blur-md shadow-lg sticky top-0 z-10 border-b border-purple-100">
+    <div className="min-h-screen bg-background">
+      {/* Main Navigation Header */}
+      <Header cartItemCount={getCartItemCount()} />
+      
+      {/* Product Breadcrumb */}
+      <div className="bg-card/95 backdrop-blur-md shadow-lg border-b border-border mt-16">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Button
               variant="ghost"
               onClick={() => navigate('/')}
-              className="gap-2 text-gray-600 hover:text-purple-600 hover:bg-purple-50 rounded-xl px-4 py-2"
+              className="gap-2 text-muted-foreground hover:text-primary hover:bg-accent rounded-xl px-4 py-2"
             >
               <ArrowLeft className="h-5 w-5" />
               Back to Collection
             </Button>
-            <div className="hidden md:flex items-center gap-4 text-sm text-gray-500">
+            <div className="hidden md:flex items-center gap-4 text-sm text-muted-foreground">
               <span className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                <div className="w-2 h-2 bg-primary rounded-full"></div>
                 Product Details
               </span>
-              <div className="w-4 h-0.5 bg-gray-300"></div>
+              <div className="w-4 h-0.5 bg-border"></div>
               <span className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-gray-300 rounded-full"></div>
+                <div className="w-2 h-2 bg-muted-foreground rounded-full"></div>
                 Choose Color
               </span>
-              <div className="w-4 h-0.5 bg-gray-300"></div>
+              <div className="w-4 h-0.5 bg-border"></div>
               <span className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-gray-300 rounded-full"></div>
+                <div className="w-2 h-2 bg-muted-foreground rounded-full"></div>
                 Add to Cart
               </span>
             </div>
             <div className="text-right">
-              <p className="text-sm text-gray-500">Estimated Total</p>
-              <p className="font-bold text-lg bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+              <p className="text-sm text-muted-foreground">Estimated Total</p>
+              <p className="font-bold text-lg text-gradient-purple">
                 ₹{(selectedVariant.price * quantity).toLocaleString()}
               </p>
             </div>
@@ -144,10 +162,10 @@ const ProductDetailPage = () => {
           {/* Product Image Section */}
           <div className="space-y-6">
             {/* Main Product Image with Enhanced Design */}
-            <Card className="overflow-hidden border-0 shadow-2xl bg-gradient-to-br from-white to-gray-50">
-              <div className="aspect-square bg-gradient-to-br from-purple-50 to-pink-50 p-8 relative">
+            <Card className="overflow-hidden border-0 shadow-elegant bg-gradient-card">
+              <div className="aspect-square bg-gradient-hero p-8 relative">
                 <div className="absolute top-4 right-4 z-10">
-                  <Badge className="bg-gradient-to-r from-purple-600 to-pink-600 text-white">
+                  <Badge className="bg-gradient-premium text-primary-foreground">
                     {selectedVariant.name}
                   </Badge>
                 </div>
@@ -167,9 +185,9 @@ const ProductDetailPage = () => {
             </Card>
             
             {/* Enhanced Color Selection Grid */}
-            <Card className="border-0 shadow-lg bg-white/90 backdrop-blur">
+            <Card className="border-0 shadow-elegant bg-card/90 backdrop-blur">
               <CardContent className="p-6">
-                <h3 className="font-semibold text-lg mb-4 text-gray-800">
+                <h3 className="font-semibold text-lg mb-4 text-foreground">
                   Choose Your Color ({product.colorVariants.filter((v: ColorVariant) => v.inStock).length} Available)
                 </h3>
                 <div className="grid grid-cols-3 sm:grid-cols-4 gap-4">
@@ -203,8 +221,8 @@ const ProductDetailPage = () => {
                         )}
                       </button>
                       <p className={`text-sm mt-2 font-medium ${
-                        selectedColor === variant.id ? 'text-purple-600' : 'text-gray-600'
-                      } ${!variant.inStock ? 'text-gray-400' : ''}`}>
+                        selectedColor === variant.id ? 'text-primary' : 'text-muted-foreground'
+                      } ${!variant.inStock ? 'text-muted-foreground/50' : ''}`}>
                         {variant.name}
                       </p>
                     </div>
@@ -217,69 +235,69 @@ const ProductDetailPage = () => {
           {/* Enhanced Product Details */}
           <div className="space-y-8">
             {/* Product Header */}
-            <div className="bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-2xl">
-              <Badge variant="secondary" className="mb-3 bg-purple-100 text-purple-700 px-3 py-1">
+            <div className="bg-gradient-accent p-6 rounded-2xl">
+              <Badge variant="secondary" className="mb-3 bg-secondary text-secondary-foreground px-3 py-1">
                 {product.material}
               </Badge>
-              <h1 className="text-4xl font-playfair font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-3">
+              <h1 className="text-4xl font-playfair font-bold text-gradient-purple mb-3">
                 {product.name}
               </h1>
-              <p className="text-xl text-gray-600 mb-4">{product.subtitle}</p>
-              <p className="text-gray-700 leading-relaxed">{product.description}</p>
+              <p className="text-xl text-muted-foreground mb-4">{product.subtitle}</p>
+              <p className="text-foreground leading-relaxed">{product.description}</p>
             </div>
 
             {/* Selected Color Display */}
-            <Card className="border-0 shadow-lg bg-gradient-to-r from-white to-purple-50">
+            <Card className="border-0 shadow-elegant bg-gradient-card">
               <CardContent className="p-6">
-                <h3 className="font-semibold text-lg mb-4">Selected Option:</h3>
-                <div className="flex items-center gap-4 p-4 bg-white rounded-xl shadow-sm">
-                  <div className="w-16 h-16 rounded-xl border-3 border-purple-300 overflow-hidden shadow-md">
+                <h3 className="font-semibold text-lg mb-4 text-foreground">Selected Option:</h3>
+                <div className="flex items-center gap-4 p-4 bg-card rounded-xl shadow-sm border border-border">
+                  <div className="w-16 h-16 rounded-xl border-3 border-primary/30 overflow-hidden shadow-md">
                     <img src={selectedVariant.image} alt={selectedVariant.name} className="w-full h-full object-cover" />
                   </div>
                   <div className="flex-1">
-                    <span className="font-bold text-lg text-gray-800">{selectedVariant.name}</span>
+                    <span className="font-bold text-lg text-foreground">{selectedVariant.name}</span>
                     <div className="flex items-center gap-2 mt-1">
                       {selectedVariant.inStock ? (
-                        <Badge className="bg-green-100 text-green-700 border-green-200">✓ In Stock</Badge>
+                        <Badge className="bg-green-500/10 text-green-600 dark:text-green-400 border-green-500/20">✓ In Stock</Badge>
                       ) : (
                         <Badge variant="destructive">Out of Stock</Badge>
                       )}
                     </div>
                   </div>
                   <div className="text-right">
-                    <span className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                    <span className="text-3xl font-bold text-gradient-purple">
                       ₹{selectedVariant.price.toLocaleString()}
                     </span>
-                    <p className="text-gray-500 text-sm">per meter</p>
+                    <p className="text-muted-foreground text-sm">per meter</p>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
             {/* Enhanced Quantity Selector */}
-            <Card className="border-0 shadow-lg">
+            <Card className="border-0 shadow-elegant">
               <CardContent className="p-6">
-                <label className="block font-semibold text-lg mb-4">Quantity (meters):</label>
+                <label className="block font-semibold text-lg mb-4 text-foreground">Quantity (meters):</label>
                 <div className="flex items-center gap-4">
                   <Button
                     variant="outline"
                     size="lg"
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
                     disabled={quantity <= 1}
-                    className="h-12 w-12 rounded-xl border-2 hover:border-purple-300 hover:bg-purple-50"
+                    className="h-12 w-12 rounded-xl border-2 hover:border-primary/30 hover:bg-accent"
                   >
                     -
                   </Button>
                   <div className="flex-1 max-w-[120px]">
-                    <div className="bg-gradient-to-r from-purple-50 to-pink-50 border-2 border-purple-200 rounded-xl px-6 py-3 text-center">
-                      <span className="text-2xl font-bold text-purple-600">{quantity}</span>
+                    <div className="bg-gradient-accent border-2 border-primary/20 rounded-xl px-6 py-3 text-center">
+                      <span className="text-2xl font-bold text-primary">{quantity}</span>
                     </div>
                   </div>
                   <Button
                     variant="outline"
                     size="lg"
                     onClick={() => setQuantity(quantity + 1)}
-                    className="h-12 w-12 rounded-xl border-2 hover:border-purple-300 hover:bg-purple-50"
+                    className="h-12 w-12 rounded-xl border-2 hover:border-primary/30 hover:bg-accent"
                   >
                     +
                   </Button>
@@ -294,14 +312,14 @@ const ProductDetailPage = () => {
             </Card>
 
             {/* Enhanced Add to Cart Section */}
-            <Card className="border-0 shadow-xl bg-gradient-to-r from-purple-600 to-pink-600 text-white">
+            <Card className="border-0 shadow-premium bg-gradient-premium text-primary-foreground">
               <CardContent className="p-6">
                 <div className="space-y-4">
                   <Button
                     onClick={handleAddToCart}
                     disabled={!selectedVariant.inStock}
                     data-cart-button
-                    className="w-full bg-white text-purple-600 hover:bg-gray-50 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                    className="w-full bg-background text-foreground hover:bg-background/90 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                   >
                     <ShoppingCart className="mr-3 h-6 w-6" />
                     Add to Cart - ₹{(selectedVariant.price * quantity).toLocaleString()}
@@ -309,22 +327,22 @@ const ProductDetailPage = () => {
                   <div className="grid grid-cols-2 gap-3">
                     <Button 
                       variant="outline" 
-                      className="py-3 bg-white/10 border-white/30 text-white hover:bg-white/20 rounded-xl"
+                      className="py-3 bg-background/10 border-background/30 text-primary-foreground hover:bg-background/20 rounded-xl"
                     >
                       <Heart className="mr-2 h-4 w-4" />
                       Wishlist
                     </Button>
                     <Button 
                       variant="outline" 
-                      className="py-3 bg-white/10 border-white/30 text-white hover:bg-white/20 rounded-xl"
+                      className="py-3 bg-background/10 border-background/30 text-primary-foreground hover:bg-background/20 rounded-xl"
                     >
                       Share
                     </Button>
                   </div>
                   {!selectedVariant.inStock && (
-                    <div className="bg-red-500/20 border border-red-300 rounded-xl p-4 text-center">
-                      <p className="font-medium">This color is currently out of stock</p>
-                      <p className="text-sm opacity-90">Please select another color option</p>
+                    <div className="bg-destructive/20 border border-destructive/30 rounded-xl p-4 text-center">
+                      <p className="font-medium text-primary-foreground">This color is currently out of stock</p>
+                      <p className="text-sm opacity-90 text-primary-foreground">Please select another color option</p>
                     </div>
                   )}
                 </div>
@@ -332,34 +350,34 @@ const ProductDetailPage = () => {
             </Card>
 
             {/* Enhanced Product Specifications */}
-            <Card className="border-0 shadow-lg bg-gradient-to-br from-gray-50 to-purple-50">
+            <Card className="border-0 shadow-elegant bg-gradient-accent">
               <CardContent className="p-6">
-                <h3 className="font-semibold text-xl mb-6 text-gray-800">Product Specifications</h3>
+                <h3 className="font-semibold text-xl mb-6 text-foreground">Product Specifications</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="bg-white p-4 rounded-xl shadow-sm">
-                    <span className="font-medium text-purple-600 text-sm uppercase tracking-wide">Material</span>
-                    <p className="text-gray-800 font-semibold text-lg">{product.material}</p>
+                  <div className="bg-card p-4 rounded-xl shadow-sm border border-border">
+                    <span className="font-medium text-primary text-sm uppercase tracking-wide">Material</span>
+                    <p className="text-foreground font-semibold text-lg">{product.material}</p>
                   </div>
-                  <div className="bg-white p-4 rounded-xl shadow-sm">
-                    <span className="font-medium text-purple-600 text-sm uppercase tracking-wide">Weight</span>
-                    <p className="text-gray-800 font-semibold text-lg">{product.weight}</p>
+                  <div className="bg-card p-4 rounded-xl shadow-sm border border-border">
+                    <span className="font-medium text-primary text-sm uppercase tracking-wide">Weight</span>
+                    <p className="text-foreground font-semibold text-lg">{product.weight}</p>
                   </div>
-                  <div className="bg-white p-4 rounded-xl shadow-sm">
-                    <span className="font-medium text-purple-600 text-sm uppercase tracking-wide">Width</span>
-                    <p className="text-gray-800 font-semibold text-lg">{product.width}</p>
+                  <div className="bg-card p-4 rounded-xl shadow-sm border border-border">
+                    <span className="font-medium text-primary text-sm uppercase tracking-wide">Width</span>
+                    <p className="text-foreground font-semibold text-lg">{product.width}</p>
                   </div>
-                  <div className="bg-white p-4 rounded-xl shadow-sm">
-                    <span className="font-medium text-purple-600 text-sm uppercase tracking-wide">Care Instructions</span>
-                    <p className="text-gray-800 font-semibold text-sm leading-relaxed">{product.care}</p>
+                  <div className="bg-card p-4 rounded-xl shadow-sm border border-border">
+                    <span className="font-medium text-primary text-sm uppercase tracking-wide">Care Instructions</span>
+                    <p className="text-foreground font-semibold text-sm leading-relaxed">{product.care}</p>
                   </div>
                 </div>
-                <div className="mt-6 bg-white p-4 rounded-xl shadow-sm">
-                  <span className="font-medium text-purple-600 text-sm uppercase tracking-wide block mb-3">Key Features</span>
+                <div className="mt-6 bg-card p-4 rounded-xl shadow-sm border border-border">
+                  <span className="font-medium text-primary text-sm uppercase tracking-wide block mb-3">Key Features</span>
                   <div className="flex flex-wrap gap-2">
                     {product.features.map((feature, index) => (
                       <Badge 
                         key={index} 
-                        className="bg-gradient-to-r from-purple-100 to-pink-100 text-purple-700 border-purple-200 px-3 py-1"
+                        className="bg-secondary text-secondary-foreground border-border px-3 py-1"
                       >
                         ✓ {feature}
                       </Badge>
@@ -373,31 +391,31 @@ const ProductDetailPage = () => {
 
         {/* Trust Indicators */}
         <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card className="border-0 shadow-lg bg-gradient-to-br from-green-50 to-emerald-50 text-center">
+          <Card className="border-0 shadow-elegant bg-gradient-card text-center">
             <CardContent className="p-6">
-              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+              <div className="w-12 h-12 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-3">
                 <span className="text-2xl">🚚</span>
               </div>
-              <h4 className="font-semibold text-lg text-gray-800 mb-2">Free Delivery</h4>
-              <p className="text-gray-600 text-sm">Free shipping on orders above ₹2000</p>
+              <h4 className="font-semibold text-lg text-foreground mb-2">Free Delivery</h4>
+              <p className="text-muted-foreground text-sm">Free shipping on orders above ₹2000</p>
             </CardContent>
           </Card>
-          <Card className="border-0 shadow-lg bg-gradient-to-br from-blue-50 to-cyan-50 text-center">
+          <Card className="border-0 shadow-elegant bg-gradient-card text-center">
             <CardContent className="p-6">
-              <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+              <div className="w-12 h-12 bg-blue-500/10 rounded-full flex items-center justify-center mx-auto mb-3">
                 <span className="text-2xl">🔄</span>
               </div>
-              <h4 className="font-semibold text-lg text-gray-800 mb-2">Easy Returns</h4>
-              <p className="text-gray-600 text-sm">7-day hassle-free return policy</p>
+              <h4 className="font-semibold text-lg text-foreground mb-2">Easy Returns</h4>
+              <p className="text-muted-foreground text-sm">7-day hassle-free return policy</p>
             </CardContent>
           </Card>
-          <Card className="border-0 shadow-lg bg-gradient-to-br from-purple-50 to-pink-50 text-center">
+          <Card className="border-0 shadow-elegant bg-gradient-card text-center">
             <CardContent className="p-6">
-              <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
+              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
                 <span className="text-2xl">⭐</span>
               </div>
-              <h4 className="font-semibold text-lg text-gray-800 mb-2">Premium Quality</h4>
-              <p className="text-gray-600 text-sm">Certified premium fabrics</p>
+              <h4 className="font-semibold text-lg text-foreground mb-2">Premium Quality</h4>
+              <p className="text-muted-foreground text-sm">Certified premium fabrics</p>
             </CardContent>
           </Card>
         </div>

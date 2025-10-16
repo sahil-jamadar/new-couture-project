@@ -26,27 +26,54 @@ export const MixedCollection = ({ id, title, subtitle, products }: MixedCollecti
   };
 
   return (
-    <section id={id} className="py-16 gradient-accent">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="font-playfair text-3xl md:text-4xl font-bold text-dark-primary mb-4">
+    <section id={id} className="py-12 sm:py-16 lg:py-20 relative overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0 bg-gradient-accent opacity-30" />
+      <div className="absolute top-10 sm:top-20 left-10 sm:left-20 w-48 sm:w-72 h-48 sm:h-72 bg-primary/5 rounded-full blur-3xl" />
+      <div className="absolute bottom-10 sm:bottom-20 right-10 sm:right-20 w-64 sm:w-96 h-64 sm:h-96 bg-accent/5 rounded-full blur-3xl" />
+      
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Enhanced Section Header */}
+        <div className="text-center mb-12 sm:mb-16 animate-fade-in">
+          {/* Decorative Top Elements */}
+          <div className="flex items-center justify-center mb-6 sm:mb-8">
+            <div className="w-12 sm:w-16 lg:w-20 h-px bg-gradient-premium" />
+            <div className="mx-4 sm:mx-6 flex items-center gap-1 sm:gap-2">
+              <div className="w-1.5 sm:w-2 h-1.5 sm:h-2 bg-primary rounded-full" />
+              <div className="w-2 sm:w-3 h-2 sm:h-3 bg-accent rounded-full" />
+              <div className="w-1.5 sm:w-2 h-1.5 sm:h-2 bg-primary rounded-full" />
+            </div>
+            <div className="w-12 sm:w-16 lg:w-20 h-px bg-gradient-premium" />
+          </div>
+          
+          <h2 className="font-playfair text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-gradient-purple mb-4 sm:mb-6 leading-tight px-4">
             {title}
           </h2>
-          <p className="text-lg text-dark-secondary max-w-2xl mx-auto">
+          
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             {subtitle}
           </p>
+          
+          {/* Featured Badge */}
+          <div className="mt-8">
+            <Badge className="bg-gradient-premium text-primary-foreground px-6 py-2 text-sm font-medium">
+              ✨ Handpicked Selection
+            </Badge>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Enhanced Product Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
           {displayProducts.map((product, index) => {
             const hasDetailPage = getProductDetail(product.id) !== null;
             return (
               <Card 
                 key={product.id} 
-                className={`group overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 gradient-card backdrop-blur ${
-                  hasDetailPage ? 'cursor-pointer hover:ring-2 hover:ring-primary/50 shadow-glow' : ''
+                className={`group overflow-hidden border-0 shadow-elegant hover:shadow-premium transition-all duration-500 transform hover:-translate-y-2 bg-card/90 backdrop-blur-sm hover-lift ${
+                  hasDetailPage ? 'cursor-pointer hover:ring-2 hover:ring-primary/30 hover:shadow-glow' : ''
                 }`}
                 onClick={() => handleCardClick(product, index)}
+                style={{ animationDelay: `${index * 0.15}s` }}
               >
               <div className="aspect-[4/5] overflow-hidden relative">
                 {hasDetailPage && (

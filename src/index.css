@@ -270,4 +270,71 @@ All colors MUST be HSL.
   .text-shadow-glow {
     text-shadow: 0 0 20px rgba(255,255,255,0.5), 2px 2px 8px rgba(0,0,0,0.8);
   }
+
+  /* Professional section animations */
+  .section-reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: slideInUp 0.8s ease-out forwards;
+  }
+
+  @keyframes slideInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Elegant separator styles */
+  .elegant-separator {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .elegant-separator::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--primary), transparent);
+    transform: translateY(-50%);
+  }
+
+  /* Professional content sections */
+  .content-section {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .content-section::before {
+    content: '';
+    position: absolute;
+    inset: -2rem;
+    background: var(--gradient-card);
+    border-radius: 2rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+  }
+
+  .content-section:hover::before {
+    opacity: 0.5;
+  }
+
+  /* Enhanced footer styling */
+  .footer-gradient {
+    background: var(--gradient-premium);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .footer-gradient::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 30% 40%, rgba(255,255,255,0.1) 0%, transparent 50%);
+    pointer-events: none;
+  }
 }

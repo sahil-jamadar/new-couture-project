@@ -89,64 +89,134 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-hero">
       <Header cartItemCount={cartCount} onSearchChange={setSearchQuery} />
       <Hero />
       
-      <ScrollingBanner onBannerClick={() => setIsTailoringFormOpen(true)} />
-      
-      <TailoringServiceForm 
-        isOpen={isTailoringFormOpen}
-        onClose={() => setIsTailoringFormOpen(false)}
-      />
-      
-      <MixedCollection
-        id="featured-collection"
-        title="Featured Collection Highlights"
-        subtitle="Explore our curated selection of premium fabrics from across all collections"
-        products={mixedProducts}
-      />
-      
-      <ProductSection
-        id="cotton-collection"
-        title="Textured & Printed Cotton Collection"
-        subtitle="Discover premium shirt fabrics crafted from Egyptian Giza cotton, Italian cotton, and linen blends"
-        products={filteredCotton}
-        onAddToCart={handleAddToCart}
-      />
+      {/* Professional Content Wrapper */}
+      <div className="relative bg-background">
+        {/* Elegant Transition from Hero */}
+        <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-transparent via-background/50 to-background" />
+        
+        {/* Main Content Container */}
+        <div className="relative z-10 space-y-12 sm:space-y-16 lg:space-y-20 py-8 sm:py-12">
+          <ScrollingBanner onBannerClick={() => setIsTailoringFormOpen(true)} />
+          
+          <TailoringServiceForm 
+            isOpen={isTailoringFormOpen}
+            onClose={() => setIsTailoringFormOpen(false)}
+          />
+          
+          {/* Featured Collection with Enhanced Styling */}
+          <section className="relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-accent opacity-30" />
+            <div className="relative z-10">
+              <MixedCollection
+                id="featured-collection"
+                title="Featured Collection Highlights"
+                subtitle="Explore our curated selection of premium fabrics from across all collections"
+                products={mixedProducts}
+              />
+            </div>
+          </section>
+          
+          {/* Cotton Collection */}
+          <section className="relative">
+            <ProductSection
+              id="cotton-collection"
+              title="Textured & Printed Cotton Collection"
+              subtitle="Discover premium shirt fabrics crafted from Egyptian Giza cotton, Italian cotton, and linen blends"
+              products={filteredCotton}
+              onAddToCart={handleAddToCart}
+            />
+            <div className="mt-8 sm:mt-12">
+              <BrandCarousel brands={brands.cotton} />
+            </div>
+          </section>
 
-      <BrandCarousel brands={brands.cotton} />
+          {/* Elegant Separator */}
+          <div className="flex items-center justify-center py-6 sm:py-8">
+            <div className="w-16 sm:w-20 lg:w-24 h-px bg-gradient-premium" />
+            <div className="mx-3 sm:mx-4 w-2 sm:w-3 h-2 sm:h-3 bg-primary rounded-full" />
+            <div className="w-16 sm:w-20 lg:w-24 h-px bg-gradient-premium" />
+          </div>
 
-      <ProductSection
-        id="trouser-collection"
-        title="Pants & Trouser Fabrics"
-        subtitle="Refined selection of unstitched trouser fabrics perfect for formal and semi-casual styles"
-        products={filteredTrouser}
-        onAddToCart={handleAddToCart}
-      />
+          {/* Trouser Collection */}
+          <section className="relative">
+            <div className="absolute inset-0 bg-gradient-accent opacity-20 rounded-2xl sm:rounded-3xl" />
+            <div className="relative z-10 p-4 sm:p-6 lg:p-8">
+              <ProductSection
+                id="trouser-collection"
+                title="Pants & Trouser Fabrics"
+                subtitle="Refined selection of unstitched trouser fabrics perfect for formal and semi-casual styles"
+                products={filteredTrouser}
+                onAddToCart={handleAddToCart}
+              />
+              <div className="mt-12">
+                <BrandCarousel brands={brands.trouser} />
+              </div>
+            </div>
+          </section>
 
-      <BrandCarousel brands={brands.trouser} />
+          {/* Elegant Separator */}
+          <div className="flex items-center justify-center py-8">
+            <div className="w-24 h-px bg-gradient-premium" />
+            <div className="mx-4 w-3 h-3 bg-accent rounded-full" />
+            <div className="w-24 h-px bg-gradient-premium" />
+          </div>
 
-      <ProductSection
-        id="ethnic-collection"
-        title="Indo-Western & Ethnic Wear"
-        subtitle="Exclusive lineup of unstitched fabrics for ethnic and contemporary men's wear"
-        products={filteredEthnic}
-        onAddToCart={handleAddToCart}
-      />
+          {/* Ethnic Collection */}
+          <section className="relative">
+            <ProductSection
+              id="ethnic-collection"
+              title="Indo-Western & Ethnic Wear"
+              subtitle="Exclusive lineup of unstitched fabrics for ethnic and contemporary men's wear"
+              products={filteredEthnic}
+              onAddToCart={handleAddToCart}
+            />
+            <div className="mt-12">
+              <BrandCarousel brands={brands.ethnic} />
+            </div>
+          </section>
+        </div>
+      </div>
 
-      <BrandCarousel brands={brands.ethnic} />
-
-      {/* Footer */}
-      <footer className="bg-primary text-primary-foreground py-12 mt-20">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="font-playfair text-3xl font-bold mb-4">The Coutures</h2>
-          <p className="text-primary-foreground/80 mb-6 italic">
-            Your Style, Our Signature
-          </p>
-          <p className="text-sm text-primary-foreground/60">
-            © 2025 The Coutures. Premium Fabrics & Apparel.
-          </p>
+      {/* Enhanced Professional Footer */}
+      <footer className="relative mt-20 overflow-hidden">
+        {/* Footer Background */}
+        <div className="absolute inset-0 bg-gradient-premium" />
+        <div className="absolute inset-0 bg-black/20" />
+        
+        {/* Footer Content */}
+        <div className="relative z-10 py-16">
+          <div className="container mx-auto px-4 text-center">
+            {/* Logo and Branding */}
+            <div className="mb-8">
+              <h2 className="font-playfair text-4xl font-bold mb-3 text-white">
+                The Coutures
+              </h2>
+              <p className="text-white/90 text-xl italic tracking-wide">
+                "your style, our signature"
+              </p>
+            </div>
+            
+            {/* Decorative Line */}
+            <div className="flex items-center justify-center mb-8">
+              <div className="w-16 h-px bg-white/30" />
+              <div className="mx-4 w-2 h-2 bg-white/50 rounded-full" />
+              <div className="w-16 h-px bg-white/30" />
+            </div>
+            
+            {/* Footer Info */}
+            <div className="space-y-2">
+              <p className="text-white/80 text-lg">
+                Premium Fabrics & Luxury Apparel
+              </p>
+              <p className="text-white/60 text-sm">
+                © 2025 The Coutures. Crafting Excellence Since Today.
+              </p>
+            </div>
+          </div>
         </div>
       </footer>
     </div>

@@ -22,12 +22,12 @@ export const ProductSection = ({
         <div className="text-center mb-12 sm:mb-16 animate-fade-in">
           {/* Decorative Top Line */}
           <div className="flex items-center justify-center mb-4 sm:mb-6">
-            <div className="w-8 sm:w-12 lg:w-16 h-px bg-gradient-premium" />
-            <div className="mx-2 sm:mx-4 w-1.5 sm:w-2 h-1.5 sm:h-2 bg-primary rounded-full" />
-            <div className="w-8 sm:w-12 lg:w-16 h-px bg-gradient-premium" />
+            <div className="w-8 sm:w-12 lg:w-16 h-px bg-gray-300" />
+            <div className="mx-2 sm:mx-4 w-1.5 sm:w-2 h-1.5 sm:h-2 bg-gray-800 rounded-full" />
+            <div className="w-8 sm:w-12 lg:w-16 h-px bg-gray-300" />
           </div>
           
-          <h2 className="font-playfair text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-gradient-purple mb-4 sm:mb-6 leading-tight px-4">
+          <h2 className="font-playfair text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-800 mb-4 sm:mb-6 leading-tight px-4">
             {title}
           </h2>
           
@@ -39,7 +39,7 @@ export const ProductSection = ({
           
           {/* Decorative Bottom Line */}
           <div className="flex items-center justify-center mt-6 sm:mt-8">
-            <div className="w-16 sm:w-20 lg:w-24 h-px bg-gradient-premium opacity-50" />
+            <div className="w-16 sm:w-20 lg:w-24 h-px bg-gray-300 opacity-50" />
           </div>
         </div>
         

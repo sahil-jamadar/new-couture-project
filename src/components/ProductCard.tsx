@@ -1,7 +1,9 @@
+import { ShareDialog } from "@/components/ShareDialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { getProductDetail } from "@/data/productDetails";
-import { ShoppingCart } from "lucide-react";
+import { Share2, ShoppingCart } from "lucide-react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export interface Product {
@@ -22,6 +24,7 @@ interface ProductCardProps {
 
 export const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
   const navigate = useNavigate();
+  const [isShareDialogOpen, setIsShareDialogOpen] = useState(false);
   const productDetail = getProductDetail(product.id);
   const hasDetailPage = productDetail !== null;
 
@@ -29,6 +32,16 @@ export const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
     if (hasDetailPage) {
       navigate(`/product/${product.id}`);
     }
+  };
+
+  const handleShareClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsShareDialogOpen(true);
+  };
+
+  const getShareUrl = () => {
+    const baseUrl = window.location.origin;
+    return hasDetailPage ? `${baseUrl}/product/${product.id}` : `${baseUrl}#${product.id}`;
   };
 
   return (
@@ -79,20 +92,40 @@ export const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
               )}
             </div>
             
-            <Button
-              onClick={(e) => {
-                e.stopPropagation();
-                onAddToCart(product);
-              }}
-              className="bg-gray-900 hover:bg-gray-800 text-white px-3 sm:px-4 py-2 rounded-md transition-colors duration-200 flex items-center gap-1 sm:gap-2 text-xs sm:text-sm"
-            >
-              <ShoppingCart className="h-3 w-3 sm:h-4 sm:w-4" />
-              <span className="hidden sm:inline">Add to Cart</span>
-              <span className="sm:hidden">Add</span>
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button
+                onClick={handleShareClick}
+                variant="outline"
+                size="sm"
+                className="px-2 sm:px-3 py-2 rounded-md transition-colors duration-200"
+              >
+                <Share2 className="h-3 w-3 sm:h-4 sm:w-4" />
+                <span className="hidden sm:inline ml-1">Share</span>
+              </Button>
+              
+              <Button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onAddToCart(product);
+                }}
+                className="bg-gray-900 hover:bg-gray-800 text-white px-3 sm:px-4 py-2 rounded-md transition-colors duration-200 flex items-center gap-1 sm:gap-2 text-xs sm:text-sm"
+              >
+                <ShoppingCart className="h-3 w-3 sm:h-4 sm:w-4" />
+                <span className="hidden sm:inline">Add to Cart</span>
+                <span className="sm:hidden">Add</span>
+              </Button>
+            </div>
           </div>
         </div>
       </CardContent>
+      
+      <ShareDialog
+        isOpen={isShareDialogOpen}
+        onClose={() => setIsShareDialogOpen(false)}
+        url={getShareUrl()}
+        title={`Check out this ${product.name}!`}
+        description={`${product.description} - Premium quality fabric from The Coutures`}
+      />
     </Card>
   );
 };

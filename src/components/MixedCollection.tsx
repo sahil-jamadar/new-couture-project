@@ -28,25 +28,25 @@ export const MixedCollection = ({ id, title, subtitle, products }: MixedCollecti
   return (
     <section id={id} className="py-12 sm:py-16 lg:py-20 relative overflow-hidden">
       {/* Background Elements */}
-      <div className="absolute inset-0 bg-gradient-accent opacity-30" />
-      <div className="absolute top-10 sm:top-20 left-10 sm:left-20 w-48 sm:w-72 h-48 sm:h-72 bg-primary/5 rounded-full blur-3xl" />
-      <div className="absolute bottom-10 sm:bottom-20 right-10 sm:right-20 w-64 sm:w-96 h-64 sm:h-96 bg-accent/5 rounded-full blur-3xl" />
+      <div className="absolute inset-0 bg-gray-50 opacity-30" />
+      <div className="absolute top-10 sm:top-20 left-10 sm:left-20 w-48 sm:w-72 h-48 sm:h-72 bg-gray-100 rounded-full blur-3xl" />
+      <div className="absolute bottom-10 sm:bottom-20 right-10 sm:right-20 w-64 sm:w-96 h-64 sm:h-96 bg-gray-200 rounded-full blur-3xl" />
       
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Enhanced Section Header */}
         <div className="text-center mb-12 sm:mb-16 animate-fade-in">
           {/* Decorative Top Elements */}
           <div className="flex items-center justify-center mb-6 sm:mb-8">
-            <div className="w-12 sm:w-16 lg:w-20 h-px bg-gradient-premium" />
+            <div className="w-12 sm:w-16 lg:w-20 h-px bg-gray-300" />
             <div className="mx-4 sm:mx-6 flex items-center gap-1 sm:gap-2">
-              <div className="w-1.5 sm:w-2 h-1.5 sm:h-2 bg-primary rounded-full" />
-              <div className="w-2 sm:w-3 h-2 sm:h-3 bg-accent rounded-full" />
-              <div className="w-1.5 sm:w-2 h-1.5 sm:h-2 bg-primary rounded-full" />
+              <div className="w-1.5 sm:w-2 h-1.5 sm:h-2 bg-gray-800 rounded-full" />
+              <div className="w-2 sm:w-3 h-2 sm:h-3 bg-gray-600 rounded-full" />
+              <div className="w-1.5 sm:w-2 h-1.5 sm:h-2 bg-gray-800 rounded-full" />
             </div>
-            <div className="w-12 sm:w-16 lg:w-20 h-px bg-gradient-premium" />
+            <div className="w-12 sm:w-16 lg:w-20 h-px bg-gray-300" />
           </div>
           
-          <h2 className="font-playfair text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-gradient-purple mb-4 sm:mb-6 leading-tight px-4">
+          <h2 className="font-playfair text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-800 mb-4 sm:mb-6 leading-tight px-4">
             {title}
           </h2>
           

@@ -18,10 +18,10 @@ export const Hero = () => {
   };
 
   return (
-    <section className="relative min-h-[60vh] sm:min-h-[70vh] md:min-h-[80vh] lg:min-h-[90vh] flex items-center justify-center overflow-hidden bg-dark-gradient">
+    <section className="relative min-h-[60vh] sm:min-h-[70vh] md:min-h-[80vh] lg:min-h-[90vh] flex items-center justify-center overflow-hidden bg-white">
       {/* Background Image with Parallax Effect */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-r from-purple-900/80 to-pink-900/70" /> {/* Dark overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-black/50" /> {/* Dark overlay for text readability */}
         <img
           src={heroImage}
           alt="Fashion influencers showcasing premium styles"
@@ -30,7 +30,6 @@ export const Hero = () => {
             animation: 'subtle-zoom 20s infinite alternate',
           }}
         />
-        {/* <div className="absolute inset-0 bg-gradient-to-br from-blue-600/40 via-purple-600/30 to-pink-600/40" /> */}
       </div>
 
       {/* Content with Spread Gradient Overlay */}
@@ -38,22 +37,22 @@ export const Hero = () => {
         <div className="max-w-4xl animate-fade-in relative">
           {/* Multiple Gradient Layers for Natural Spread Effect */}
           <div className="absolute -inset-4 sm:-inset-8 bg-gradient-to-r from-black/60 via-black/40 to-transparent rounded-full blur-3xl" />
-          <div className="absolute -inset-6 sm:-inset-12 bg-gradient-to-br from-purple-900/50 via-black/30 to-transparent rounded-full blur-2xl" />
+          <div className="absolute -inset-6 sm:-inset-12 bg-gradient-to-br from-black/50 via-black/30 to-transparent rounded-full blur-2xl" />
           <div className="absolute -inset-3 sm:-inset-6 bg-gradient-to-t from-black/50 via-transparent to-black/30 rounded-full blur-xl" />
           
           {/* Content Container */}
           <div className="relative z-10 p-4 sm:p-6 md:p-8 lg:p-12">
-            <p className="text-accent font-medium text-xs sm:text-sm md:text-base tracking-widest uppercase mb-3 sm:mb-4 text-purple-200 text-shadow-strong">
+            <p className="text-white/80 font-medium text-xs sm:text-sm md:text-base tracking-widest uppercase mb-3 sm:mb-4 text-shadow-strong">
               Inspired by Fashion Icons
             </p>
             <h1 className="font-playfair text-2xl sm:text-3xl md:text-4xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 text-white leading-tight text-shadow-strong">
               Elevate Your Style<br />
-              <span className="text-gradient-purple">With The Best</span>
+              <span className="text-white">With The Best</span>
             </h1>
             
             {/* Elegant Slogan */}
             <div className="mb-4 sm:mb-6">
-              <p className="text-accent font-medium text-sm sm:text-base md:text-lg lg:text-xl tracking-wider italic text-white/90 text-shadow-glow">
+              <p className="text-white/90 font-medium text-sm sm:text-base md:text-lg lg:text-xl tracking-wider italic text-shadow-glow">
                 "your style, our signature"
               </p>
             </div>
@@ -65,7 +64,7 @@ export const Hero = () => {
               <Button
                 size="lg"
                 onClick={scrollToCollection}
-                className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-premium group transition-all duration-300 hover:shadow-glow hover-lift w-full sm:w-auto"
+                className="bg-white hover:bg-gray-100 text-black shadow-lg group transition-all duration-300 hover:shadow-xl w-full sm:w-auto"
               >
                 Explore Collections
                 <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5 group-hover:translate-x-1 transition-transform" />
@@ -73,7 +72,7 @@ export const Hero = () => {
               <Button
                 size="lg"
                 variant="outline"
-                className="border-2 border-white/80 text-white hover:bg-white/10 hover:text-white backdrop-blur-sm transition-all duration-300 hover-lift w-full sm:w-auto"
+                className="border-2 border-white/80 text-white hover:bg-white hover:text-black backdrop-blur-sm transition-all duration-300 w-full sm:w-auto"
               >
                 View Catalogue
               </Button>

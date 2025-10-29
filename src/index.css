@@ -29,51 +29,51 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Light Theme Color System - Purple & Pink Gradient */
-    --background: 260 100% 98%;
-    --foreground: 240 25% 15%;
+    /* Clean White Theme Color System */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 15%;
 
     --card: 0 0% 100%;
-    --card-foreground: 240 25% 15%;
+    --card-foreground: 0 0% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 240 25% 15%;
+    --popover-foreground: 0 0% 15%;
 
-    /* Purple-Pink gradient primary */
-    --primary: 260 85% 60%;
-    --primary-foreground: 0 0% 100%;
+    /* Elegant dark primary */
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
 
-    /* Light secondary with purple tint */
-    --secondary: 260 30% 95%;
-    --secondary-foreground: 240 25% 15%;
+    /* Light gray secondary */
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 15%;
 
     /* Muted light elements */
-    --muted: 260 30% 94%;
-    --muted-foreground: 240 15% 50%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
 
-    /* Pink accent */
-    --accent: 320 85% 65%;
-    --accent-foreground: 0 0% 100%;
+    /* Gray accent */
+    --accent: 0 0% 15%;
+    --accent-foreground: 0 0% 98%;
 
     --destructive: 0 85% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 260 30% 90%;
-    --input: 260 30% 94%;
-    --ring: 260 85% 60%;
+    --border: 0 0% 90%;
+    --input: 0 0% 96%;
+    --ring: 0 0% 15%;
 
     --radius: 0.75rem;
 
-    /* Light Theme Gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(260 100% 98%) 0%, hsl(320 100% 96%) 100%);
-    --gradient-premium: linear-gradient(135deg, hsl(260 85% 60%) 0%, hsl(320 85% 65%) 100%);
-    --gradient-accent: linear-gradient(135deg, hsl(260 30% 95%) 0%, hsl(320 30% 97%) 100%);
-    --gradient-card: linear-gradient(135deg, hsl(0 0% 100%) 0%, hsl(260 30% 98%) 100%);
+    /* Clean White Theme Gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(0 0% 100%) 0%, hsl(0 0% 98%) 100%);
+    --gradient-premium: linear-gradient(135deg, hsl(0 0% 15%) 0%, hsl(0 0% 25%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(0 0% 98%) 0%, hsl(0 0% 96%) 100%);
+    --gradient-card: linear-gradient(135deg, hsl(0 0% 100%) 0%, hsl(0 0% 99%) 100%);
     
-    /* Light Shadows */
-    --shadow-elegant: 0 4px 24px -2px hsl(260 30% 20% / 0.08);
-    --shadow-premium: 0 8px 32px -4px hsl(260 30% 30% / 0.15);
-    --shadow-glow: 0 0 20px hsl(260 85% 60% / 0.15);
+    /* Clean Shadows */
+    --shadow-elegant: 0 4px 24px -2px hsl(0 0% 0% / 0.08);
+    --shadow-premium: 0 8px 32px -4px hsl(0 0% 0% / 0.12);
+    --shadow-glow: 0 0 20px hsl(0 0% 0% / 0.1);
     
     /* Transitions */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);

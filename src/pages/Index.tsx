@@ -89,14 +89,14 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-hero">
+    <div className="min-h-screen bg-white">
       <Header cartItemCount={cartCount} onSearchChange={setSearchQuery} />
       <Hero />
       
       {/* Professional Content Wrapper */}
-      <div className="relative bg-background">
+      <div className="relative bg-white">
         {/* Elegant Transition from Hero */}
-        <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-transparent via-background/50 to-background" />
+        <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-transparent via-white/50 to-white" />
         
         {/* Main Content Container */}
         <div className="relative z-10 space-y-12 sm:space-y-16 lg:space-y-20 py-8 sm:py-12">
@@ -109,7 +109,7 @@ const Index = () => {
           
           {/* Featured Collection with Enhanced Styling */}
           <section className="relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-accent opacity-30" />
+            <div className="absolute inset-0 bg-gray-50 opacity-50" />
             <div className="relative z-10">
               <MixedCollection
                 id="featured-collection"
@@ -120,11 +120,11 @@ const Index = () => {
             </div>
           </section>
           
-          {/* Cotton Collection */}
+          {/* Shirt Fabrics Collection */}
           <section className="relative">
             <ProductSection
               id="cotton-collection"
-              title="Textured & Printed Cotton Collection"
+              title="Premium Shirt Fabrics"
               subtitle="Discover premium shirt fabrics crafted from Egyptian Giza cotton, Italian cotton, and linen blends"
               products={filteredCotton}
               onAddToCart={handleAddToCart}
@@ -136,18 +136,18 @@ const Index = () => {
 
           {/* Elegant Separator */}
           <div className="flex items-center justify-center py-6 sm:py-8">
-            <div className="w-16 sm:w-20 lg:w-24 h-px bg-gradient-premium" />
-            <div className="mx-3 sm:mx-4 w-2 sm:w-3 h-2 sm:h-3 bg-primary rounded-full" />
-            <div className="w-16 sm:w-20 lg:w-24 h-px bg-gradient-premium" />
+            <div className="w-16 sm:w-20 lg:w-24 h-px bg-gray-300" />
+            <div className="mx-3 sm:mx-4 w-2 sm:w-3 h-2 sm:h-3 bg-gray-800 rounded-full" />
+            <div className="w-16 sm:w-20 lg:w-24 h-px bg-gray-300" />
           </div>
 
           {/* Trouser Collection */}
           <section className="relative">
-            <div className="absolute inset-0 bg-gradient-accent opacity-20 rounded-2xl sm:rounded-3xl" />
+            <div className="absolute inset-0 bg-gray-50 opacity-60 rounded-3xl" />
             <div className="relative z-10 p-4 sm:p-6 lg:p-8">
               <ProductSection
                 id="trouser-collection"
-                title="Pants & Trouser Fabrics"
+                title="Trouser Fabrics"
                 subtitle="Refined selection of unstitched trouser fabrics perfect for formal and semi-casual styles"
                 products={filteredTrouser}
                 onAddToCart={handleAddToCart}
@@ -160,17 +160,17 @@ const Index = () => {
 
           {/* Elegant Separator */}
           <div className="flex items-center justify-center py-8">
-            <div className="w-24 h-px bg-gradient-premium" />
-            <div className="mx-4 w-3 h-3 bg-accent rounded-full" />
-            <div className="w-24 h-px bg-gradient-premium" />
+            <div className="w-24 h-px bg-gray-300" />
+            <div className="mx-4 w-3 h-3 bg-gray-800 rounded-full" />
+            <div className="w-24 h-px bg-gray-300" />
           </div>
 
           {/* Ethnic Collection */}
           <section className="relative">
             <ProductSection
               id="ethnic-collection"
-              title="Indo-Western & Ethnic Wear"
-              subtitle="Exclusive lineup of unstitched fabrics for ethnic and contemporary men's wear"
+              title="Indo-Western"
+              subtitle="Exclusive lineup of unstitched fabrics for Indo-Western, Modi jackets, Sherwanis, and Jodhpuri wear"
               products={filteredEthnic}
               onAddToCart={handleAddToCart}
             />
@@ -184,8 +184,7 @@ const Index = () => {
       {/* Enhanced Professional Footer */}
       <footer className="relative mt-20 overflow-hidden">
         {/* Footer Background */}
-        <div className="absolute inset-0 bg-gradient-premium" />
-        <div className="absolute inset-0 bg-black/20" />
+        <div className="absolute inset-0 bg-gray-900" />
         
         {/* Footer Content */}
         <div className="relative z-10 py-16">

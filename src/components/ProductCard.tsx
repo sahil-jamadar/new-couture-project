@@ -1,7 +1,10 @@
-import { Card, CardContent } from "@/components/ui/card";
+import { ShareDialog } from "@/components/ShareDialog";
 import { Button } from "@/components/ui/button";
-import { ShoppingCart } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { getProductDetail } from "@/data/productDetails";
+import { Share2, ShoppingCart } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export interface Product {
   id: string;
@@ -10,6 +13,8 @@ export interface Product {
   price: number;
   image: string;
   material?: string;
+  brand?: string;
+  category?: string;
 }
 
 interface ProductCardProps {
@@ -18,55 +23,110 @@ interface ProductCardProps {
 }
 
 export const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
-  const [isHovered, setIsHovered] = useState(false);
+  const navigate = useNavigate();
+  const [isShareDialogOpen, setIsShareDialogOpen] = useState(false);
+  const productDetail = getProductDetail(product.id);
+  const hasDetailPage = productDetail !== null;
+
+  const handleCardClick = () => {
+    if (hasDetailPage) {
+      navigate(`/product/${product.id}`);
+    }
+  };
+
+  const handleShareClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsShareDialogOpen(true);
+  };
+
+  const getShareUrl = () => {
+    const baseUrl = window.location.origin;
+    return hasDetailPage ? `${baseUrl}/product/${product.id}` : `${baseUrl}#${product.id}`;
+  };
 
   return (
     <Card
-      className="group overflow-hidden border-border/50 hover:shadow-premium transition-smooth cursor-pointer"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      className={`group overflow-hidden border border-gray-200 bg-white hover:shadow-lg transition-all duration-300 rounded-lg ${
+        hasDetailPage ? 'cursor-pointer' : ''
+      }`}
+      onClick={handleCardClick}
     >
-      <div className="relative overflow-hidden aspect-square">
+      <div className="relative overflow-hidden aspect-square bg-gray-50">
         <img
           src={product.image}
           alt={product.name}
-          className={`w-full h-full object-cover transition-smooth ${
-            isHovered ? "scale-110" : "scale-100"
-          }`}
+          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
         />
-        <div
-          className={`absolute inset-0 bg-gradient-to-t from-background/90 to-transparent transition-smooth ${
-            isHovered ? "opacity-100" : "opacity-0"
-          }`}
-        >
-          <div className="absolute bottom-4 left-4 right-4">
-            <Button
-              onClick={(e) => {
-                e.stopPropagation();
-                onAddToCart(product);
-              }}
-              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-premium"
-            >
-              <ShoppingCart className="mr-2 h-4 w-4" />
-              Add to Cart
-            </Button>
+      </div>
+      <CardContent className="p-3 sm:p-4">
+        <div className="space-y-2">
+          <h3 className="font-semibold text-base sm:text-lg text-gray-900 line-clamp-2 group-hover:text-primary transition-colors">
+            {product.name}
+          </h3>
+          
+          {product.brand && (
+            <p className="text-xs sm:text-sm text-gray-600 font-medium">
+              {product.brand}
+            </p>
+          )}
+          
+          <p className="text-xs sm:text-sm text-gray-600 line-clamp-2">
+            {product.description}
+          </p>
+          
+          {product.material && (
+            <p className="text-xs text-gray-500 uppercase tracking-wide">
+              {product.material}
+            </p>
+          )}
+          
+          <div className="flex items-center justify-between pt-2 flex-wrap gap-2">
+            <div className="flex flex-col">
+              <span className="text-lg sm:text-xl font-bold text-gray-900">
+                ₹{product.price.toLocaleString()}
+              </span>
+              {product.category && (
+                <span className="text-xs text-gray-500 capitalize">
+                  {product.category}
+                </span>
+              )}
+            </div>
+            
+            <div className="flex items-center gap-2">
+              <Button
+                onClick={handleShareClick}
+                variant="outline"
+                size="sm"
+                className="px-2 sm:px-3 py-2 rounded-md transition-colors duration-200"
+              >
+                <Share2 className="h-3 w-3 sm:h-4 sm:w-4" />
+                <span className="hidden sm:inline ml-1">Share</span>
+              </Button>
+              
+              <Button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onAddToCart(product);
+                }}
+                className="bg-gray-900 hover:bg-gray-800 text-white px-3 sm:px-4 py-2 rounded-md transition-colors duration-200 flex items-center gap-1 sm:gap-2 text-xs sm:text-sm"
+              >
+                <ShoppingCart className="h-3 w-3 sm:h-4 sm:w-4" />
+                <span className="hidden sm:inline">Add to Cart</span>
+                <span className="sm:hidden">Add</span>
+              </Button>
+            </div>
           </div>
         </div>
-      </div>
-      <CardContent className="p-4">
-        <h3 className="font-playfair font-semibold text-lg mb-2 text-foreground group-hover:text-primary transition-smooth">
-          {product.name}
-        </h3>
-        <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
-          {product.description}
-        </p>
-        {product.material && (
-          <p className="text-xs text-accent font-medium mb-2 uppercase tracking-wide">
-            {product.material}
-          </p>
-        )}
-        <p className="text-xl font-bold text-primary">₹{product.price.toLocaleString()}</p>
       </CardContent>
+      
+      <ShareDialog
+        isOpen={isShareDialogOpen}
+        onClose={() => setIsShareDialogOpen(false)}
+        url={getShareUrl()}
+        title={`Check out this ${product.name}!`}
+        description={`${product.description} - Premium quality fabric from The Coutures`}
+      />
     </Card>
   );
 };
+

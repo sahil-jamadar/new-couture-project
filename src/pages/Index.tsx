@@ -6,6 +6,7 @@ import { Product } from "@/components/ProductCard";
 import { ProductSection } from "@/components/ProductSection";
 import { ScrollingBanner } from "@/components/ScrollingBanner";
 import { TailoringServiceForm } from "@/components/TailoringServiceForm";
+import { TailoringServiceSection } from "@/components/TailoringServiceSection";
 import { brands, cottonProducts, ethnicProducts, trouserProducts } from "@/data/products";
 import { useToast } from "@/hooks/use-toast";
 import { useMemo, useState } from "react";
@@ -98,26 +99,27 @@ const Index = () => {
         {/* Elegant Transition from Hero */}
         <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-transparent via-white/50 to-white" />
         
-        {/* Main Content Container */}
-        <div className="relative z-10 space-y-12 sm:space-y-16 lg:space-y-20 py-8 sm:py-12">
+        {/* Professional Announcement Banner */}
+        <div className="relative z-20 -mt-12">
           <ScrollingBanner onBannerClick={() => setIsTailoringFormOpen(true)} />
-          
+        </div>
+        
+        {/* Main Content Container */}
+        <div className="relative z-10 space-y-12 sm:space-y-16 lg:space-y-20 pt-8">
           <TailoringServiceForm 
             isOpen={isTailoringFormOpen}
             onClose={() => setIsTailoringFormOpen(false)}
           />
           
-          {/* Featured Collection with Enhanced Styling */}
-          <section className="relative overflow-hidden">
-            <div className="absolute inset-0 bg-gray-50 opacity-50" />
-            <div className="relative z-10">
-              <MixedCollection
-                id="featured-collection"
-                title="Featured Collection Highlights"
-                subtitle="Explore our curated selection of premium fabrics from across all collections"
-                products={mixedProducts}
-              />
-            </div>
+          {/* Featured Collection with Premium Styling */}
+          <section className="relative overflow-hidden bg-white">
+            <MixedCollection
+              id="featured-collection"
+              title="Featured Collection Highlights"
+              subtitle="Discover our handpicked selection of premium fabrics crafted from the finest materials worldwide"
+              products={mixedProducts}
+              onAddToCart={handleAddToCart}
+            />
           </section>
           
           {/* Shirt Fabrics Collection */}
@@ -129,17 +131,18 @@ const Index = () => {
               products={filteredCotton}
               onAddToCart={handleAddToCart}
             />
-            <div className="mt-8 sm:mt-12">
+            
+            {/* Premium Tailoring Service */}
+            <TailoringServiceSection 
+              onBookService={() => setIsTailoringFormOpen(true)}
+              category="cotton"
+            />
+            
+            <div className="mt-2 sm:mt-2">
               <BrandCarousel brands={brands.cotton} />
             </div>
           </section>
 
-          {/* Elegant Separator */}
-          <div className="flex items-center justify-center py-6 sm:py-8">
-            <div className="w-16 sm:w-20 lg:w-24 h-px bg-gray-300" />
-            <div className="mx-3 sm:mx-4 w-2 sm:w-3 h-2 sm:h-3 bg-gray-800 rounded-full" />
-            <div className="w-16 sm:w-20 lg:w-24 h-px bg-gray-300" />
-          </div>
 
           {/* Trouser Collection */}
           <section className="relative">
@@ -152,6 +155,13 @@ const Index = () => {
                 products={filteredTrouser}
                 onAddToCart={handleAddToCart}
               />
+              
+              {/* Premium Tailoring Service */}
+              <TailoringServiceSection 
+                onBookService={() => setIsTailoringFormOpen(true)}
+                category="trouser"
+              />
+              
               <div className="mt-12">
                 <BrandCarousel brands={brands.trouser} />
               </div>
@@ -174,7 +184,14 @@ const Index = () => {
               products={filteredEthnic}
               onAddToCart={handleAddToCart}
             />
-            <div className="mt-12">
+            
+            {/* Premium Tailoring Service */}
+            <TailoringServiceSection 
+              onBookService={() => setIsTailoringFormOpen(true)}
+              category="ethnic"
+            />
+            
+            <div className="mt-2">
               <BrandCarousel brands={brands.ethnic} />
             </div>
           </section>

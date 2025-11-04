@@ -3,13 +3,15 @@ import { ShareDialog } from "@/components/ShareDialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { WhatsAppButton } from "@/components/WhatsAppButton";
+import { useProduct } from "@/contexts/ProductContext";
 import { ColorVariant, getProductDetail } from "@/data/productDetails";
 import { useToast } from "@/hooks/use-toast";
 import {
-  ArrowLeft,
-  Heart,
-  Share2,
-  ShoppingCart
+    ArrowLeft,
+    Heart,
+    Share2,
+    ShoppingCart
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -18,9 +20,11 @@ const ProductDetailPage = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { productId } = useParams<{ productId: string }>();
+  const { selectedProduct } = useProduct();
   const [selectedColor, setSelectedColor] = useState<string>("");
   const [quantity, setQuantity] = useState(1);
   const [product, setProduct] = useState<any>(null);
+  const [currentImage, setCurrentImage] = useState<string>("");
   const [isShareDialogOpen, setIsShareDialogOpen] = useState(false);
 
   // Get cart from localStorage to display count
@@ -42,19 +46,27 @@ const ProductDetailPage = () => {
       const productDetail = getProductDetail(productId);
       if (productDetail) {
         setProduct(productDetail);
-        // Set first available color as default
-        const firstAvailableColor = productDetail.colorVariants.find(
-          (v) => v.inStock
-        );
-        if (firstAvailableColor) {
-          setSelectedColor(firstAvailableColor.id);
+        
+        // If we have a selected product from homepage, use its image first
+        if (selectedProduct) {
+          setCurrentImage(selectedProduct.image);
+          // Don't auto-select any color variant - show original first
+        } else {
+          // Fallback: Set first available color as default if no product was selected
+          const firstAvailableColor = productDetail.colorVariants.find(
+            (v) => v.inStock
+          );
+          if (firstAvailableColor) {
+            setSelectedColor(firstAvailableColor.id);
+            setCurrentImage(firstAvailableColor.image);
+          }
         }
       } else {
         // Redirect to home if product not found
         navigate("/");
       }
     }
-  }, [productId, navigate]);
+  }, [productId, selectedProduct, navigate]);
 
   if (!product) {
     return (
@@ -72,14 +84,18 @@ const ProductDetailPage = () => {
     product.colorVariants[0];
 
   const handleAddToCart = () => {
-    // Add a loading state for better UX
+    // Determine which product variant to add to cart
+    const currentPrice = selectedColor ? selectedVariant.price : (selectedProduct?.price || selectedVariant.price);
+    const imageToUse = currentImage || (selectedColor ? selectedVariant.image : selectedProduct?.image || selectedVariant.image);
+    const currentName = selectedColor ? `${product.name} - ${selectedVariant.name}` : (selectedProduct?.name || product.name);
+    
     const cartProduct = {
-      id: `${product.id}-${selectedColor}`,
-      name: `${product.name} - ${selectedVariant.name}`,
-      description: product.subtitle,
-      price: selectedVariant.price,
-      image: selectedVariant.image,
-      material: product.material,
+      id: `${product.id}${selectedColor ? `-${selectedColor}` : '-original'}`,
+      name: currentName,
+      description: selectedProduct?.description || product.subtitle,
+      price: currentPrice,
+      image: imageToUse,
+      material: selectedProduct?.material || product.material,
       quantity: quantity,
     };
 
@@ -175,7 +191,7 @@ const ProductDetailPage = () => {
             <div className="text-right">
               <p className="text-sm text-muted-foreground">Estimated Total</p>
               <p className="font-bold text-lg text-gradient-purple">
-                ₹{(selectedVariant.price * quantity).toLocaleString()}
+                ₹{((selectedColor ? selectedVariant.price : (selectedProduct?.price || selectedVariant.price)) * quantity).toLocaleString()}
               </p>
             </div>
           </div>
@@ -191,15 +207,15 @@ const ProductDetailPage = () => {
               <div className="aspect-square bg-gradient-hero p-8 relative">
                 <div className="absolute top-4 right-4 z-10">
                   <Badge className="bg-gradient-premium text-primary-foreground">
-                    {selectedVariant.name}
+                    {selectedColor ? selectedVariant.name : (selectedProduct?.material || product.material)}
                   </Badge>
                 </div>
                 <img
-                  src={selectedVariant.image}
-                  alt={`${product.name} in ${selectedVariant.name}`}
+                  src={currentImage || selectedVariant.image}
+                  alt={selectedColor ? `${product.name} in ${selectedVariant.name}` : (selectedProduct?.name || product.name)}
                   className="w-full h-full object-cover rounded-xl shadow-lg transition-all duration-500 hover:scale-105"
                 />
-                {!selectedVariant.inStock && (
+                {selectedColor && !selectedVariant.inStock && (
                   <div className="absolute inset-0 bg-black/60 flex items-center justify-center rounded-xl">
                     <Badge variant="destructive" className="text-lg py-2 px-4">
                       Out of Stock
@@ -209,22 +225,60 @@ const ProductDetailPage = () => {
               </div>
             </Card>
 
-            {/* Enhanced Color Selection Grid */}
+            {/* Enhanced Product Options */}
             <Card className="border-0 shadow-elegant bg-card/90 backdrop-blur">
               <CardContent className="p-6">
                 <h3 className="font-semibold text-lg mb-4 text-foreground">
-                  Choose Your Color (
-                  {
-                    product.colorVariants.filter((v: ColorVariant) => v.inStock)
-                      .length
-                  }{" "}
-                  Available)
+                  Available Options ({
+                    (selectedProduct ? 1 : 0) + product.colorVariants.filter((v: ColorVariant) => v.inStock).length
+                  } choices)
                 </h3>
                 <div className="grid grid-cols-3 sm:grid-cols-4 gap-4">
+                  {/* Original Product - Show First if Available */}
+                  {selectedProduct && (
+                    <div className="text-center">
+                      <button
+                        onClick={() => {
+                          setSelectedColor("");
+                          setCurrentImage(selectedProduct.image);
+                        }}
+                        className={`relative w-full aspect-square rounded-xl overflow-hidden border-3 transition-all duration-300 ${
+                          !selectedColor
+                            ? "border-purple-500 ring-4 ring-purple-200 scale-105 shadow-xl"
+                            : "border-gray-200 hover:border-purple-300 hover:scale-102 hover:shadow-lg"
+                        }`}
+                      >
+                        <img
+                          src={selectedProduct.image}
+                          alt={selectedProduct.name}
+                          className="w-full h-full object-cover transition-transform duration-300"
+                        />
+                        {!selectedColor && (
+                          <div className="absolute inset-0 bg-purple-500/20 flex items-center justify-center">
+                            <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
+                              <div className="w-3 h-3 bg-purple-600 rounded-full"></div>
+                            </div>
+                          </div>
+                        )}
+                      </button>
+                      <p
+                        className={`text-sm mt-2 font-medium ${
+                          !selectedColor ? "text-primary" : "text-muted-foreground"
+                        }`}
+                      >
+                        {selectedProduct.material}
+                      </p>
+                    </div>
+                  )}
+                  
+                  {/* Color Variants */}
                   {product.colorVariants.map((variant: ColorVariant) => (
                     <div key={variant.id} className="text-center">
                       <button
-                        onClick={() => setSelectedColor(variant.id)}
+                        onClick={() => {
+                          setSelectedColor(variant.id);
+                          setCurrentImage(variant.image);
+                        }}
                         disabled={!variant.inStock}
                         className={`relative w-full aspect-square rounded-xl overflow-hidden border-3 transition-all duration-300 ${
                           selectedColor === variant.id
@@ -282,20 +336,22 @@ const ProductDetailPage = () => {
                 variant="secondary"
                 className="mb-3 bg-secondary text-secondary-foreground px-3 py-1"
               >
-                {product.material}
+                {selectedProduct?.material || product.material}
               </Badge>
               <h1 className="text-4xl font-playfair font-bold text-gradient-purple mb-3">
-                {product.name}
+                {selectedProduct?.name || product.name}
               </h1>
               <p className="text-xl text-muted-foreground mb-4">
-                {product.subtitle}
+                {selectedProduct?.description || product.subtitle}
               </p>
               <p className="text-foreground leading-relaxed">
-                {product.description}
+                {!selectedColor && selectedProduct ? 
+                  `${selectedProduct.description} - This premium fabric combines quality craftsmanship with modern design, perfect for creating elegant garments.` : 
+                  product.description}
               </p>
             </div>
 
-            {/* Selected Color Display */}
+            {/* Selected Option Display */}
             <Card className="border-0 shadow-elegant bg-gradient-card">
               <CardContent className="p-6">
                 <h3 className="font-semibold text-lg mb-4 text-foreground">
@@ -304,28 +360,34 @@ const ProductDetailPage = () => {
                 <div className="flex items-center gap-4 p-4 bg-card rounded-xl shadow-sm border border-border">
                   <div className="w-16 h-16 rounded-xl border-3 border-primary/30 overflow-hidden shadow-md">
                     <img
-                      src={selectedVariant.image}
-                      alt={selectedVariant.name}
+                      src={currentImage || selectedVariant.image}
+                      alt={selectedColor ? selectedVariant.name : (selectedProduct?.name || "Original Product")}
                       className="w-full h-full object-cover"
                     />
                   </div>
                   <div className="flex-1">
                     <span className="font-bold text-lg text-foreground">
-                      {selectedVariant.name}
+                      {selectedColor ? selectedVariant.name : (selectedProduct?.material || "Premium Fabric")}
                     </span>
                     <div className="flex items-center gap-2 mt-1">
-                      {selectedVariant.inStock ? (
-                        <Badge className="bg-green-500/10 text-green-600 dark:text-green-400 border-green-500/20">
-                          ✓ In Stock
-                        </Badge>
+                      {selectedColor ? (
+                        selectedVariant.inStock ? (
+                          <Badge className="bg-green-500/10 text-green-600 dark:text-green-400 border-green-500/20">
+                            ✓ In Stock
+                          </Badge>
+                        ) : (
+                          <Badge variant="destructive">Out of Stock</Badge>
+                        )
                       ) : (
-                        <Badge variant="destructive">Out of Stock</Badge>
+                        <Badge className="bg-green-500/10 text-green-600 dark:text-green-400 border-green-500/20">
+                          ✓ Available
+                        </Badge>
                       )}
                     </div>
                   </div>
                   <div className="text-right">
                     <span className="text-3xl font-bold text-gradient-purple">
-                      ₹{selectedVariant.price.toLocaleString()}
+                      ₹{selectedColor ? selectedVariant.price.toLocaleString() : (selectedProduct?.price.toLocaleString() || selectedVariant.price.toLocaleString())}
                     </span>
                     <p className="text-muted-foreground text-sm">per meter</p>
                   </div>
@@ -367,7 +429,7 @@ const ProductDetailPage = () => {
                   <div className="ml-4 text-right">
                     <p className="text-sm text-gray-500">Total Amount</p>
                     <p className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-                      ₹{(selectedVariant.price * quantity).toLocaleString()}
+                      ₹{((selectedColor ? selectedVariant.price : (selectedProduct?.price || selectedVariant.price)) * quantity).toLocaleString()}
                     </p>
                   </div>
                 </div>
@@ -380,44 +442,50 @@ const ProductDetailPage = () => {
                 <div className="space-y-4">
                   <Button
                     onClick={handleAddToCart}
-                    disabled={!selectedVariant.inStock}
+                    disabled={selectedColor && !selectedVariant.inStock}
                     data-cart-button
                     className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-foreground hover:bg-background/90 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                   >
                     <ShoppingCart className="mr-3 h-6 w-6" />
                     Add to Cart - ₹
-                    {(selectedVariant.price * quantity).toLocaleString()}
+                    {((selectedColor ? selectedVariant.price : (selectedProduct?.price || selectedVariant.price)) * quantity).toLocaleString()}
                   </Button>
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-3 gap-2">
                     <Button
                       variant="outline"
-                      className="py-3 px-4 bg-background/10 border border-background/30 text-foreground/80 
+                      className="py-3 px-2 bg-background/10 border border-background/30 text-foreground/80 
              hover:bg-gray-100 hover:border-gray-300 hover:text-foreground 
              dark:hover:bg-white/10 dark:hover:border-white/20 dark:hover:text-white 
-             transition-all duration-200 rounded-xl"
+             transition-all duration-200 rounded-xl text-sm"
                     >
-                      <Heart className="mr-2 h-4 w-4" />
+                      <Heart className="mr-1 h-4 w-4" />
                       Wishlist
                     </Button>
                     <Button
                       onClick={handleShareClick}
                       variant="outline"
-                      className="py-3 px-4 bg-background/10 border border-background/30 text-foreground/80 
+                      className="py-3 px-2 bg-background/10 border border-background/30 text-foreground/80 
              hover:bg-gray-100 hover:border-gray-300 hover:text-foreground 
              dark:hover:bg-white/10 dark:hover:border-white/20 dark:hover:text-white 
-             transition-all duration-200 rounded-xl"
+             transition-all duration-200 rounded-xl text-sm"
                     >
-                      <Share2 className="mr-2 h-4 w-4" />
+                      <Share2 className="mr-1 h-4 w-4" />
                       Share
                     </Button>
+                    <WhatsAppButton
+                      productName={selectedProduct?.name || product.name}
+                      productId={product.id}
+                      size="sm"
+                      className="py-3 px-2 text-sm"
+                    />
                   </div>
-                  {!selectedVariant.inStock && (
+                  {selectedColor && !selectedVariant.inStock && (
                     <div className="bg-destructive/20 border border-destructive/30 rounded-xl p-4 text-center">
                       <p className="font-medium text-primary-foreground">
-                        This color is currently out of stock
+                        This color variant is currently out of stock
                       </p>
                       <p className="text-sm opacity-90 text-primary-foreground">
-                        Please select another color option
+                        Please select the original product or another color option
                       </p>
                     </div>
                   )}

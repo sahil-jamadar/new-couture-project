@@ -16,10 +16,10 @@ export const ProductSection = ({
   onAddToCart,
 }: ProductSectionProps) => {
   return (
-    <section id={id} className="py-12 sm:py-16 lg:py-20 scroll-mt-24 relative">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <section id={id} className="py-2 sm:py-2 lg:py-2 scroll-mt-2 relative">
+      <div className="container mx-auto px-2 sm:px-2 lg:px-2">
         {/* Enhanced Section Header */}
-        <div className="text-center mb-12 sm:mb-16 animate-fade-in">
+        <div className="text-center mb-6 sm:mb-8 animate-fade-in">
           {/* Decorative Top Line */}
           <div className="flex items-center justify-center mb-4 sm:mb-6">
             <div className="w-8 sm:w-12 lg:w-16 h-px bg-gray-300" />
@@ -43,8 +43,8 @@ export const ProductSection = ({
           </div>
         </div>
         
-        {/* Products Grid with Enhanced Spacing */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+        {/* Products Grid with Enhanced Spacing - 2 products per row on mobile */}
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
           {products.map((product, index) => (
             <div 
               key={product.id}

@@ -339,7 +339,7 @@ const SearchResults = () => {
                   <h2 className="text-2xl font-playfair font-bold text-gray-800 mb-8">
                     Search Results ({searchResults.length})
                   </h2>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                  <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-8">
                     {searchResults.map((product) => (
                       <ProductCard
                         key={product.id}
@@ -356,7 +356,7 @@ const SearchResults = () => {
                     <h2 className="text-2xl font-playfair font-bold text-gray-800 mb-8">
                       Related Products ({relatedProducts.length})
                     </h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                    <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-8">
                       {relatedProducts.map((product) => (
                         <ProductCard
                           key={product.id}

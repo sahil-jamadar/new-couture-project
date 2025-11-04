@@ -1,8 +1,9 @@
 import { ShareDialog } from "@/components/ShareDialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { useProduct } from "@/contexts/ProductContext";
 import { getProductDetail } from "@/data/productDetails";
-import { Share2, ShoppingCart } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -24,12 +25,15 @@ interface ProductCardProps {
 
 export const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
   const navigate = useNavigate();
+  const { setSelectedProduct } = useProduct();
   const [isShareDialogOpen, setIsShareDialogOpen] = useState(false);
   const productDetail = getProductDetail(product.id);
   const hasDetailPage = productDetail !== null;
 
   const handleCardClick = () => {
     if (hasDetailPage) {
+      // Store the clicked product in context for consistency
+      setSelectedProduct(product);
       navigate(`/product/${product.id}`);
     }
   };
@@ -41,84 +45,86 @@ export const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
 
   const getShareUrl = () => {
     const baseUrl = window.location.origin;
-    return hasDetailPage ? `${baseUrl}/product/${product.id}` : `${baseUrl}#${product.id}`;
+    return hasDetailPage
+      ? `${baseUrl}/product/${product.id}`
+      : `${baseUrl}#${product.id}`;
   };
 
   return (
     <Card
-      className={`group overflow-hidden border border-gray-200 bg-white hover:shadow-lg transition-all duration-300 rounded-lg ${
-        hasDetailPage ? 'cursor-pointer' : ''
+      className={`group overflow-hidden border border-gray-200/80 bg-white hover:shadow-xl hover:border-primary/30 transition-all duration-300 rounded-lg ${
+        hasDetailPage ? "cursor-pointer" : ""
       }`}
       onClick={handleCardClick}
     >
-      <div className="relative overflow-hidden aspect-square bg-gray-50">
+      <div className="relative overflow-hidden aspect-square bg-gradient-to-br from-gray-50 to-gray-100">
         <img
           src={product.image}
           alt={product.name}
-          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </div>
       <CardContent className="p-3 sm:p-4">
         <div className="space-y-2">
-          <h3 className="font-semibold text-base sm:text-lg text-gray-900 line-clamp-2 group-hover:text-primary transition-colors">
+          {/* Title */}
+          <h3 className="font-playfair font-bold text-sm sm:text-base text-gray-900 line-clamp-2 group-hover:text-primary transition-colors duration-300 min-h-[2.5rem]">
             {product.name}
           </h3>
-          
-          {product.brand && (
-            <p className="text-xs sm:text-sm text-gray-600 font-medium">
-              {product.brand}
-            </p>
-          )}
-          
-          <p className="text-xs sm:text-sm text-gray-600 line-clamp-2">
+
+          {/* Brand & Material */}
+          <div className="flex items-center gap-2 text-xs">
+            {product.brand && (
+              <span className="text-primary/80 font-semibold uppercase tracking-wide">
+                {product.brand}
+              </span>
+            )}
+            {product.material && (
+              <>
+                {product.brand && <span className="text-gray-300">•</span>}
+                <span className="text-gray-500 uppercase">
+                  {product.material}
+                </span>
+              </>
+            )}
+          </div>
+
+          {/* Description - Desktop only */}
+          <p className="text-xs text-gray-600 line-clamp-1 hidden sm:block leading-relaxed">
             {product.description}
           </p>
-          
-          {product.material && (
-            <p className="text-xs text-gray-500 uppercase tracking-wide">
-              {product.material}
-            </p>
-          )}
-          
-          <div className="flex items-center justify-between pt-2 flex-wrap gap-2">
-            <div className="flex flex-col">
-              <span className="text-lg sm:text-xl font-bold text-gray-900">
-                ₹{product.price.toLocaleString()}
-              </span>
-              {product.category && (
-                <span className="text-xs text-gray-500 capitalize">
-                  {product.category}
+
+          <div className="h-2"></div>
+
+          <div className="flex gap-4">
+            {/* Price Section */}
+            <div className="flex items-baseline justify-between border-t border-gray-100">
+              <div className="flex flex-col">
+                <span className="text-lg sm:text-xl font-bold text-gray-900">
+                  ₹{product.price.toLocaleString()}
                 </span>
-              )}
+                {product.category && (
+                  <span className="text-xs text-gray-500 capitalize">
+                    {product.category}
+                  </span>
+                )}
+              </div>
             </div>
-            
-            <div className="flex items-center gap-2">
-              <Button
-                onClick={handleShareClick}
-                variant="outline"
-                size="sm"
-                className="px-2 sm:px-3 py-2 rounded-md transition-colors duration-200"
-              >
-                <Share2 className="h-3 w-3 sm:h-4 sm:w-4" />
-                <span className="hidden sm:inline ml-1">Share</span>
-              </Button>
-              
-              <Button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onAddToCart(product);
-                }}
-                className="bg-gray-900 hover:bg-gray-800 text-white px-3 sm:px-4 py-2 rounded-md transition-colors duration-200 flex items-center gap-1 sm:gap-2 text-xs sm:text-sm"
-              >
-                <ShoppingCart className="h-3 w-3 sm:h-4 sm:w-4" />
-                <span className="hidden sm:inline">Add to Cart</span>
-                <span className="sm:hidden">Add</span>
-              </Button>
-            </div>
+
+            <Button
+              onClick={(e) => {
+                e.stopPropagation();
+                onAddToCart(product);
+              }}
+              className="w-full bg-gray-900 hover:bg-black text-white py-2.5 rounded-md transition-all duration-300 hover:shadow-md font-medium text-sm"
+            >
+              <ShoppingCart className="h-4 w-4 mr-2" />
+              Add to Cart
+            </Button>
           </div>
         </div>
       </CardContent>
-      
+
       <ShareDialog
         isOpen={isShareDialogOpen}
         onClose={() => setIsShareDialogOpen(false)}
@@ -129,4 +135,3 @@ export const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
     </Card>
   );
 };
-

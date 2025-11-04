@@ -13,7 +13,7 @@ export const BrandCarousel = ({ brands }: BrandCarouselProps) => {
   };
 
   return (
-    <section className="py-12 sm:py-16 bg-gray-50 my-12 sm:my-16 lg:my-20">
+    <section className="py-4 sm:py-4 bg-gray-50 my-4 sm:my-4 lg:my-6">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <h3 className="text-center font-playfair text-xl sm:text-2xl md:text-3xl font-semibold mb-8 sm:mb-12 text-gray-800">
           Featured Brands

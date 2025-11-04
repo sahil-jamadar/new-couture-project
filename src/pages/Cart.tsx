@@ -1,18 +1,18 @@
 import { Product } from "@/components/ProductCard";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
-import { ArrowLeft, Minus, Plus, Trash2 } from "lucide-react";
+import { ArrowLeft, Minus, Plus, Scissors, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -221,6 +221,39 @@ export const Cart = () => {
                     </AlertDialogFooter>
                   </AlertDialogContent>
                 </AlertDialog>
+              </CardContent>
+            </Card>
+
+            {/* Tailoring Services Link */}
+            <Card className="mt-6 shadow-premium">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <Scissors className="h-6 w-6 text-primary mr-3" />
+                    <div>
+                      <h3 className="font-playfair text-lg font-bold">Need Tailoring Services?</h3>
+                      <p className="text-sm text-muted-foreground">
+                        Professional alterations and custom fitting available
+                      </p>
+                    </div>
+                  </div>
+                  <Button
+                    variant="outline"
+                    className="bg-primary/10 border-primary/20 text-primary hover:bg-primary hover:text-white"
+                    onClick={() => {
+                      // Navigate to tailoring services section or contact
+                      const tailoringSection = document.getElementById('tailoring-services');
+                      if (tailoringSection) {
+                        tailoringSection.scrollIntoView({ behavior: 'smooth' });
+                      } else {
+                        navigate('/#tailoring');
+                      }
+                    }}
+                  >
+                    <Scissors className="mr-2 h-4 w-4" />
+                    View Services
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           </div>

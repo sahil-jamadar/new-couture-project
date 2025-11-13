@@ -57,7 +57,7 @@ export const ScrollingBanner = ({ onBannerClick }: ScrollingBannerProps) => {
           {/* Enhanced call to action */}
           <div className="mt-3 flex items-center justify-center gap-4 text-sm">
             <span className="font-bold text-yellow-400 bg-yellow-400/10 px-3 py-1 rounded-full border border-yellow-400/30">
-              📞 Book Free Consultation
+              📞 Book Appointment
             </span>
             <span className="hidden sm:inline text-white/80">•</span>
             <span className="hidden sm:inline font-semibold text-white/90">Home Measurements Available</span>

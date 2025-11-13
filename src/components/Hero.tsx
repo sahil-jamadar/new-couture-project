@@ -1,22 +1,6 @@
-import heroImage from "@/assets/hero-fashion-influencers.jpeg";
-import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import heroImage from "@/assets/hero-fashion-influencers.jpg";
 
 export const Hero = () => {
-  const scrollToCollection = () => {
-    const element = document.getElementById("cotton-collection");
-    if (element) {
-      const offset = 100;
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - offset;
-      
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth"
-      });
-    }
-  };
-
   return (
     <section className="relative min-h-[60vh] sm:min-h-[70vh] md:min-h-[80vh] lg:min-h-[90vh] flex items-center justify-center overflow-hidden bg-white">
       {/* Background Image with Parallax Effect */}
@@ -25,10 +9,7 @@ export const Hero = () => {
         <img
           src={heroImage}
           alt="Fashion influencers showcasing premium styles"
-          className="w-full h-full object-cover transform scale-110 animate-subtle-zoom"
-          style={{
-            animation: 'subtle-zoom 20s infinite alternate',
-          }}
+          className="w-full h-full object-contain object-top"
         />
       </div>
 
@@ -60,23 +41,6 @@ export const Hero = () => {
             <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-100 mb-6 sm:mb-8 max-w-2xl leading-relaxed text-shadow-strong">
               Join the fashion revolution with our curated collection of premium fabrics. From runway-inspired designs to timeless classics.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center md:justify-start">
-              <Button
-                size="lg"
-                onClick={scrollToCollection}
-                className="bg-white hover:bg-gray-100 text-black shadow-lg group transition-all duration-300 hover:shadow-xl w-full sm:w-auto"
-              >
-                Explore Collections
-                <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5 group-hover:translate-x-1 transition-transform" />
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-2 border-white/80 text-white hover:bg-white hover:text-black backdrop-blur-sm transition-all duration-300 w-full sm:w-auto"
-              >
-                View Catalogue
-              </Button>
-            </div>
           </div>
         </div>
       </div>

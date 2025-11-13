@@ -45,44 +45,58 @@ export const TailoringServiceSection = ({ onBookService, category }: TailoringSe
   const serviceInfo = getCategorySpecificServices();
 
   return (
-    <section className="py-12 sm:py-16 relative overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-50 via-white to-pink-50" />
-      <div className="absolute top-0 left-0 w-full h-full opacity-30">
-        <div className="absolute top-10 right-10 w-64 h-64 bg-gradient-to-r from-purple-200 to-pink-200 rounded-full blur-3xl" />
-        <div className="absolute bottom-10 left-10 w-48 h-48 bg-gradient-to-r from-blue-200 to-purple-200 rounded-full blur-3xl" />
+    <section className="py-8 sm:py-12 lg:py-16 relative overflow-hidden">
+      {/* Clean Background */}
+      <div className="absolute inset-0 bg-white" />
+      
+      {/* Subtle Pattern */}
+      <div className="absolute inset-0 opacity-30">
+        <div className="absolute inset-0" style={{
+          backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(0,0,0,0.03) 1px, transparent 0)',
+          backgroundSize: '40px 40px'
+        }} />
       </div>
+      
+      {/* Minimal Accent Elements */}
+      <div className="absolute top-20 right-10 w-40 h-40 bg-purple-100 rounded-full blur-3xl opacity-20" />
+      <div className="absolute bottom-20 left-10 w-40 h-40 bg-blue-100 rounded-full blur-3xl opacity-20" />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-          {/* Left Side - Service Info */}
-          <div className="space-y-6">
-            {/* Header */}
-            <div className="space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="text-4xl">{serviceInfo.icon}</div>
-                <Badge className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-4 py-1">
-                  Premium Service
-                </Badge>
-              </div>
-              
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-playfair font-bold bg-gradient-to-r from-purple-900 to-gray-800 bg-clip-text text-transparent">
-                {serviceInfo.title}
-              </h2>
-              
-              <p className="text-lg text-gray-600 leading-relaxed">
-                {serviceInfo.description}
-              </p>
-            </div>
+        {/* Professional Section Header */}
+        <div className="text-center mb-10 lg:mb-12">
+          <div className="flex items-center justify-center mb-6">
+            <div className="w-12 h-px bg-gray-300" />
+            <div className="mx-4 w-1.5 h-1.5 bg-purple-600 rounded-full" />
+            <div className="w-12 h-px bg-gray-300" />
+          </div>
+          
+          <div className="inline-flex items-center gap-3 mb-6">
+            <div className="text-3xl">{serviceInfo.icon}</div>
+            <Badge className="bg-purple-600 text-white px-4 py-1.5 text-sm font-medium">
+              Premium Service
+            </Badge>
+          </div>
+          
+          <h2 className="font-playfair text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 tracking-tight">
+            {serviceInfo.title}
+          </h2>
+          
+          <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+            {serviceInfo.description}
+          </p>
+        </div>
 
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start max-w-6xl mx-auto">
+          {/* Left Side - Services */}
+          <div className="space-y-6">
             {/* Services Grid */}
             <div className="grid grid-cols-2 gap-3">
               {serviceInfo.services.map((service, index) => (
                 <div 
                   key={index}
-                  className="flex items-center gap-2 p-3 bg-white/80 backdrop-blur rounded-lg border border-purple-100 shadow-sm"
+                  className="flex items-center gap-2 p-4 bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300"
                 >
-                  <Scissors className="h-4 w-4 text-purple-600" />
+                  <Scissors className="h-4 w-4 text-purple-600 flex-shrink-0" />
                   <span className="text-sm font-medium text-gray-700">{service}</span>
                 </div>
               ))}
@@ -91,84 +105,79 @@ export const TailoringServiceSection = ({ onBookService, category }: TailoringSe
             {/* CTA Button */}
             <Button 
               onClick={onBookService}
-              className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-6 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group"
+              className="w-full bg-purple-600 hover:bg-purple-700 text-white px-6 py-6 text-base font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-300 group"
             >
-              <Calendar className="mr-3 h-5 w-5 group-hover:rotate-12 transition-transform" />
-              Book Free Consultation
+              <Calendar className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
+              Book Appointment
             </Button>
+            
+            {/* Contact Info */}
+            <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+              <div className="flex items-center justify-center gap-2 text-gray-700">
+                <Phone className="h-4 w-4 text-purple-600" />
+                <span className="font-medium">+91 98765 43210</span>
+                <span className="text-gray-400">|</span>
+                <span className="text-sm text-gray-600">Available 9 AM - 8 PM</span>
+              </div>
+            </div>
           </div>
 
           {/* Right Side - Features Cards */}
           <div className="space-y-4">
             {/* Feature Cards */}
-            <div className="grid gap-4">
-              {/* Quality Card */}
-              <Card className="border-0 shadow-lg bg-white/90 backdrop-blur hover:shadow-xl transition-shadow duration-300">
-                <CardContent className="p-6">
-                  <div className="flex items-start gap-4">
-                    <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-3 rounded-full">
-                      <Star className="h-6 w-6 text-white" />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="font-semibold text-lg text-gray-900 mb-2">
-                        Master Craftsmanship
-                      </h3>
-                      <p className="text-gray-600 text-sm leading-relaxed">
-                        25+ years of experience with precision fitting and premium finishing techniques.
-                      </p>
-                    </div>
+            <Card className="border border-gray-200 shadow-sm bg-white hover:shadow-md transition-shadow duration-300">
+              <CardContent className="p-6">
+                <div className="flex items-start gap-4">
+                  <div className="bg-purple-100 p-3 rounded-lg">
+                    <Star className="h-6 w-6 text-purple-600" />
                   </div>
-                </CardContent>
-              </Card>
-
-              {/* Home Visit Card */}
-              <Card className="border-0 shadow-lg bg-white/90 backdrop-blur hover:shadow-xl transition-shadow duration-300">
-                <CardContent className="p-6">
-                  <div className="flex items-start gap-4">
-                    <div className="bg-gradient-to-r from-blue-500 to-purple-500 p-3 rounded-full">
-                      <MapPin className="h-6 w-6 text-white" />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="font-semibold text-lg text-gray-900 mb-2">
-                        Home Visit Service
-                      </h3>
-                      <p className="text-gray-600 text-sm leading-relaxed">
-                        Our expert tailors visit your location for measurements and fittings at your convenience.
-                      </p>
-                    </div>
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-lg text-gray-900 mb-2">
+                      Master Craftsmanship
+                    </h3>
+                    <p className="text-gray-600 text-sm leading-relaxed">
+                      25+ years of experience with precision fitting and premium finishing techniques.
+                    </p>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </CardContent>
+            </Card>
 
-              {/* Support Card */}
-              <Card className="border-0 shadow-lg bg-white/90 backdrop-blur hover:shadow-xl transition-shadow duration-300">
-                <CardContent className="p-6">
-                  <div className="flex items-start gap-4">
-                    <div className="bg-gradient-to-r from-green-500 to-blue-500 p-3 rounded-full">
-                      <Users className="h-6 w-6 text-white" />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="font-semibold text-lg text-gray-900 mb-2">
-                        Dedicated Support
-                      </h3>
-                      <p className="text-gray-600 text-sm leading-relaxed">
-                        Personal consultation and aftercare service to ensure perfect fit and satisfaction.
-                      </p>
-                    </div>
+            <Card className="border border-gray-200 shadow-sm bg-white hover:shadow-md transition-shadow duration-300">
+              <CardContent className="p-6">
+                <div className="flex items-start gap-4">
+                  <div className="bg-blue-100 p-3 rounded-lg">
+                    <MapPin className="h-6 w-6 text-blue-600" />
                   </div>
-                </CardContent>
-              </Card>
-            </div>
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-lg text-gray-900 mb-2">
+                      Home Visit Service
+                    </h3>
+                    <p className="text-gray-600 text-sm leading-relaxed">
+                      Our expert tailors visit your location for measurements and fittings at your convenience.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
 
-            {/* Contact Info */}
-            <div className="mt-6 p-4 bg-gradient-to-r from-purple-100 to-pink-100 rounded-xl">
-              <div className="flex items-center justify-center gap-2 text-purple-700">
-                <Phone className="h-4 w-4" />
-                <span className="font-medium">Call: +91 98765 43210</span>
-                <span className="text-purple-500">|</span>
-                <span className="text-sm">Free Consultation</span>
-              </div>
-            </div>
+            <Card className="border border-gray-200 shadow-sm bg-white hover:shadow-md transition-shadow duration-300">
+              <CardContent className="p-6">
+                <div className="flex items-start gap-4">
+                  <div className="bg-green-100 p-3 rounded-lg">
+                    <Users className="h-6 w-6 text-green-600" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-lg text-gray-900 mb-2">
+                      Dedicated Support
+                    </h3>
+                    <p className="text-gray-600 text-sm leading-relaxed">
+                      Personal consultation and aftercare service to ensure perfect fit and satisfaction.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>

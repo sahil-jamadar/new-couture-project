@@ -10,14 +10,18 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
-import { ArrowLeft, Minus, Plus, Scissors, Trash2 } from "lucide-react";
+import { validateStock } from "@/lib/orderService";
+import { ArrowLeft, Minus, Plus, Scissors, Trash2, AlertCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface CartItem extends Product {
   quantity: number;
+  color: string;
+  productId?: string;
 }
 
 export const Cart = () => {
@@ -26,18 +30,84 @@ export const Cart = () => {
   const { isLoggedIn } = useAuth();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [showLoginDialog, setShowLoginDialog] = useState(false);
+  const [outOfStockItems, setOutOfStockItems] = useState<Set<string>>(new Set());
+  const [checkingStock, setCheckingStock] = useState(false);
 
   useEffect(() => {
     // Load cart from localStorage
     try {
       const cartData = localStorage.getItem("coutures-cart");
+      console.log("📦 Loading cart from localStorage...");
       if (cartData) {
-        setCartItems(JSON.parse(cartData));
+        const items = JSON.parse(cartData);
+        console.log("✅ Cart loaded:", items.length, "items");
+        console.log("🔍 Cart items details:", items.map((item: any) => ({
+          id: item.id,
+          productId: item.productId,
+          name: item.name,
+          color: item.color,
+          quantity: item.quantity,
+          price: item.price
+        })));
+        setCartItems(items);
+      } else {
+        console.log("📭 No cart data found in localStorage");
       }
     } catch (e) {
-      console.error("Failed to load cart", e);
+      console.error("❌ Failed to load cart", e);
     }
   }, []);
+
+  // Validate stock whenever cart items change
+  useEffect(() => {
+    const checkStock = async () => {
+      if (cartItems.length === 0) return;
+
+      console.log("\n🔄 Starting stock validation for cart items...");
+      setCheckingStock(true);
+      try {
+        const itemsToValidate = cartItems.map(item => ({
+          id: item.id,
+          productId: item.productId || item.id.split('-')[0],
+          color: item.color || "",
+          quantity: item.quantity
+        }));
+        
+        console.log("📋 Items to validate:", itemsToValidate);
+        
+        const validation = await validateStock(itemsToValidate);
+
+        console.log("✓ Validation result:", {
+          valid: validation.valid,
+          outOfStockCount: validation.outOfStock.length,
+          outOfStockItems: validation.outOfStock
+        });
+
+        if (!validation.valid) {
+          const outOfStockSet = new Set(
+            validation.outOfStock.map(item => item.id)
+          );
+          console.log("🚫 Setting out of stock items:", Array.from(outOfStockSet));
+          setOutOfStockItems(outOfStockSet);
+
+          toast({
+            title: "Stock Update",
+            description: `${validation.outOfStock.length} item(s) are out of stock`,
+            variant: "destructive"
+          });
+        } else {
+          console.log("✅ All items are in stock!");
+          setOutOfStockItems(new Set());
+        }
+      } catch (error) {
+        console.error("❌ Error checking stock:", error);
+      } finally {
+        setCheckingStock(false);
+      }
+    };
+
+    checkStock();
+  }, [cartItems, toast]);
 
   const updateCart = (newCart: CartItem[]) => {
     setCartItems(newCart);
@@ -51,14 +121,23 @@ export const Cart = () => {
     updateCart(newCart);
   };
 
-  const handleRemoveItem = (productId: string) => {
-    const newCart = cartItems.filter((item) => item.id !== productId);
+  const handleRemoveItem = (productId: string, color: string) => {
+    const newCart = cartItems.filter((item) => !(item.id === productId && item.color === color));
     updateCart(newCart);
     toast({
       title: "Item Removed",
       description: "Item has been removed from your cart",
     });
   };
+
+  const isItemOutOfStock = (itemId: string, color: string) => {
+    // Check using the full cart item id
+    const isOutOfStock = outOfStockItems.has(itemId);
+    console.log(`🔍 Checking if item is out of stock: ${itemId}, Color: ${color}, Result: ${isOutOfStock}`);
+    return isOutOfStock;
+  };
+
+  const hasOutOfStockItems = outOfStockItems.size > 0;
 
   const subtotal = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
@@ -104,69 +183,120 @@ export const Cart = () => {
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Cart Items */}
           <div className="lg:col-span-2 space-y-4">
-            {cartItems.map((item) => (
-              <Card key={item.id} className="overflow-hidden">
-                <CardContent className="p-4">
-                  <div className="flex gap-4">
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className="w-24 h-24 object-cover rounded"
-                    />
-                    <div className="flex-1">
-                      <h3 className="font-playfair font-semibold text-lg mb-1">
-                        {item.name}
-                      </h3>
-                      <p className="text-sm text-muted-foreground mb-2">
-                        {item.description}
-                      </p>
-                      {item.material && (
-                        <p className="text-xs text-accent font-medium uppercase">
-                          {item.material}
-                        </p>
-                      )}
-                    </div>
-                    <div className="text-right">
-                      <p className="font-bold text-lg text-primary mb-4">
-                        ₹{(item.price * item.quantity).toLocaleString()}
-                      </p>
-                      <div className="flex items-center gap-2 mb-2">
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          className="h-8 w-8"
-                          onClick={() =>
-                            handleUpdateQuantity(item.id, Math.max(1, item.quantity - 1))
-                          }
-                        >
-                          <Minus className="h-3 w-3" />
-                        </Button>
-                        <span className="w-8 text-center font-medium">
-                          {item.quantity}
-                        </span>
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          className="h-8 w-8"
-                          onClick={() => handleUpdateQuantity(item.id, item.quantity + 1)}
-                        >
-                          <Plus className="h-3 w-3" />
-                        </Button>
-                      </div>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-destructive hover:text-destructive"
-                        onClick={() => handleRemoveItem(item.id)}
-                      >
-                        <Trash2 className="h-4 w-4 mr-1" />
-                        Remove
-                      </Button>
-                    </div>
+            {hasOutOfStockItems && (
+              <Card className="border-destructive bg-destructive/5">
+                <CardContent className="p-4 flex items-start gap-3">
+                  <AlertCircle className="h-5 w-5 text-destructive flex-shrink-0 mt-0.5" />
+                  <div className="flex-1">
+                    <h4 className="font-semibold text-destructive mb-1">
+                      Some items are out of stock or have issues
+                    </h4>
+                    <p className="text-sm text-muted-foreground mb-3">
+                      These items might be old cart entries without color information. Please remove them and add fresh items from the product page.
+                    </p>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        console.log("🗑️ Clearing cart...");
+                        localStorage.removeItem("coutures-cart");
+                        setCartItems([]);
+                        setOutOfStockItems(new Set());
+                        toast({
+                          title: "Cart Cleared",
+                          description: "All items removed. Please add items again from product pages.",
+                        });
+                      }}
+                      className="text-destructive border-destructive hover:bg-destructive/10"
+                    >
+                      Clear Cart & Start Fresh
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
-            ))}
+            )}
+
+            {cartItems.map((item) => {
+              const itemOutOfStock = isItemOutOfStock(item.id, item.color || "");
+              
+              return (
+                <Card key={`${item.id}-${item.color}`} className={`overflow-hidden ${itemOutOfStock ? 'border-destructive opacity-75' : ''}`}>
+                  <CardContent className="p-4">
+                    <div className="flex gap-4">
+                      <div className="relative">
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          className="w-24 h-24 object-cover rounded"
+                        />
+                        {itemOutOfStock && (
+                          <Badge variant="destructive" className="absolute top-0 right-0 text-xs">
+                            Out of Stock
+                          </Badge>
+                        )}
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-playfair font-semibold text-lg mb-1">
+                          {item.name}
+                        </h3>
+                        <p className="text-sm text-muted-foreground mb-2">
+                          {item.description}
+                        </p>
+                        {item.color && (
+                          <p className="text-xs text-accent font-medium mb-1">
+                            Color: {item.color}
+                          </p>
+                        )}
+                        {item.material && (
+                          <p className="text-xs text-accent font-medium uppercase">
+                            {item.material}
+                          </p>
+                        )}
+                      </div>
+                      <div className="text-right">
+                        <p className="font-bold text-lg text-primary mb-4">
+                          ₹{(item.price * item.quantity).toLocaleString()}
+                        </p>
+                        <div className="flex items-center gap-2 mb-2">
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            className="h-8 w-8"
+                            onClick={() =>
+                              handleUpdateQuantity(item.id, Math.max(1, item.quantity - 1))
+                            }
+                            disabled={itemOutOfStock}
+                          >
+                            <Minus className="h-3 w-3" />
+                          </Button>
+                          <span className="w-8 text-center font-medium">
+                            {item.quantity}
+                          </span>
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            className="h-8 w-8"
+                            onClick={() => handleUpdateQuantity(item.id, item.quantity + 1)}
+                            disabled={itemOutOfStock}
+                          >
+                            <Plus className="h-3 w-3" />
+                          </Button>
+                        </div>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-destructive hover:text-destructive"
+                          onClick={() => handleRemoveItem(item.id, item.color || "")}
+                        >
+                          <Trash2 className="h-4 w-4 mr-1" />
+                          Remove
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
 
           {/* Order Summary */}
@@ -194,16 +324,16 @@ export const Cart = () => {
                 </div>
                 <Button 
                   className="w-full bg-primary hover:bg-primary/90 shadow-premium"
+                  disabled={hasOutOfStockItems || checkingStock}
                   onClick={() => {
                     if (!isLoggedIn) {
                       setShowLoginDialog(true);
                     } else {
-                      // Handle checkout process
-                      console.log("Proceeding to checkout");
+                      navigate('/checkout');
                     }
                   }}
                 >
-                  Proceed to Checkout
+                  {checkingStock ? "Checking Stock..." : hasOutOfStockItems ? "Remove Out of Stock Items" : "Proceed to Checkout"}
                 </Button>
                 
                 <AlertDialog open={showLoginDialog} onOpenChange={setShowLoginDialog}>

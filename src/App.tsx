@@ -6,13 +6,18 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ProductProvider } from "./contexts/ProductContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
-import BrandPage from "./pages/BrandPage";
 import { Cart } from "./pages/Cart";
+import Checkout from "./pages/Checkout";
+import CollectionPage from "./pages/CollectionPage";
+import CategoryProducts from "./pages/CategoryProducts";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
+import MyAppointments from "./pages/MyAppointments";
+import MyOrders from "./pages/MyOrders";
 import NotFound from "./pages/NotFound";
-import ProductDetailPage from "./pages/ProductDetailPage";
+import ProductDetailPage2 from "./pages/ProductDetailPage2";
 import SearchResults from "./pages/SearchResults";
+import AllProducts from "./pages/AllProducts";
 
 const queryClient = new QueryClient();
 
@@ -29,10 +34,15 @@ const App = () => {
                 <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/cart" element={<Cart />} />
+              <Route path="/checkout" element={<Checkout />} />
+              <Route path="/orders" element={<MyOrders />} />
               <Route path="/login" element={<Login />} />
               <Route path="/search" element={<SearchResults />} />
-              <Route path="/product/:productId" element={<ProductDetailPage />} />
-              <Route path="/brand/:brandName" element={<BrandPage />} />
+              <Route path="/products" element={<AllProducts />} />
+              <Route path="/product/:productId" element={<ProductDetailPage2 />} />
+              <Route path="/collection/:slug" element={<CollectionPage />} />
+              <Route path="/category/:category" element={<CategoryProducts />} />
+              <Route path="/appointments" element={<MyAppointments />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
                 </Routes>

@@ -1,5 +1,4 @@
 import { SearchWithSuggestions } from "@/components/SearchWithSuggestions";
-import ThemeToggle from "@/components/ThemeToggle";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/contexts/AuthContext";
-import { Heart, LogOut, Menu, Settings, ShoppingCart, User, X } from "lucide-react";
+import { Heart, LogOut, Menu, Settings, ShoppingCart, User, X, Calendar, Package } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -56,9 +55,9 @@ export const Header = ({ cartItemCount, onSearchChange }: HeaderProps) => {
   };
 
   const navItems = [
-    { label: "Shirt Fabrics", id: "cotton-collection" },
-    { label: "Trouser Fabrics", id: "trouser-collection" },
-    { label: "Indo-Western", id: "ethnic-collection" },
+    { label: "Shirt Fabrics", id: "cotton-collection", category: "Shirt Fabrics" },
+    { label: "Trouser Fabrics", id: "trouser-collection", category: "Trouser Fabrics" },
+    { label: "Indo-Western", id: "ethnic-collection", category: "Indo-Western" },
   ];
 
   return (
@@ -76,7 +75,7 @@ export const Header = ({ cartItemCount, onSearchChange }: HeaderProps) => {
             {/* Logo */}
             <div className="flex-shrink-0">
               <button
-                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                onClick={() => navigate("/")}
                 className="text-2xl font-playfair font-bold text-gradient-purple hover:opacity-80 transition-opacity"
               >
                 The Coutures
@@ -89,7 +88,7 @@ export const Header = ({ cartItemCount, onSearchChange }: HeaderProps) => {
             {navItems.map((item) => (
               <button
                 key={item.id}
-                onClick={() => scrollToSection(item.id)}
+                onClick={() => navigate(`/category/${item.category.toLowerCase().replace(/\s+/g, '-')}`)} 
                 className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors relative group"
               >
                 {item.label}
@@ -110,9 +109,6 @@ export const Header = ({ cartItemCount, onSearchChange }: HeaderProps) => {
 
             {/* Right Side Actions - Professional E-commerce Layout */}
             <div className="flex items-center gap-1">
-              {/* Theme Toggle */}
-              <ThemeToggle />
-              
               {/* Cart Button with Enhanced Design */}
               <Button
                 variant="ghost"
@@ -160,9 +156,13 @@ export const Header = ({ cartItemCount, onSearchChange }: HeaderProps) => {
                       <User className="mr-2 h-4 w-4" />
                       <span>Profile</span>
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => navigate('/wishlist')}>
-                      <Heart className="mr-2 h-4 w-4" />
-                      <span>Wishlist</span>
+                    <DropdownMenuItem onClick={() => navigate('/orders')}>
+                      <Package className="mr-2 h-4 w-4" />
+                      <span>My Orders</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => navigate('/appointments')}>
+                      <Calendar className="mr-2 h-4 w-4" />
+                      <span>My Appointments</span>
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => navigate('/settings')}>
                       <Settings className="mr-2 h-4 w-4" />
@@ -218,7 +218,10 @@ export const Header = ({ cartItemCount, onSearchChange }: HeaderProps) => {
               {navItems.map((item) => (
                 <button
                   key={item.id}
-                  onClick={() => scrollToSection(item.id)}
+                  onClick={() => {
+                    navigate(`/category/${item.category.toLowerCase().replace(/\s+/g, '-')}`);
+                    setIsMobileMenuOpen(false);
+                  }}
                   className="text-left px-4 py-3 text-sm font-medium text-foreground hover:text-primary hover:bg-accent rounded-lg transition-colors"
                 >
                   {item.label}
@@ -228,11 +231,6 @@ export const Header = ({ cartItemCount, onSearchChange }: HeaderProps) => {
             
             {/* Mobile Actions */}
             <div className="pt-4 border-t border-border space-y-3">
-              <div className="flex items-center justify-between px-4">
-                <span className="text-sm font-medium text-foreground">Theme</span>
-                <ThemeToggle />
-              </div>
-              
               <div className="flex items-center justify-between px-4">
                 <span className="text-sm font-medium text-foreground">Cart</span>
                 <Button
@@ -282,6 +280,15 @@ export const Header = ({ cartItemCount, onSearchChange }: HeaderProps) => {
                     className="w-full text-left px-4 py-2 text-sm font-medium text-foreground hover:text-primary hover:bg-accent rounded-lg transition-colors"
                   >
                     Profile
+                  </button>
+                  <button
+                    onClick={() => {
+                      navigate('/appointments');
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="w-full text-left px-4 py-2 text-sm font-medium text-foreground hover:text-primary hover:bg-accent rounded-lg transition-colors"
+                  >
+                    My Appointments
                   </button>
                   <button
                     onClick={() => {

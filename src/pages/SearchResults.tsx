@@ -1,14 +1,14 @@
 import { Product, ProductCard } from "@/components/ProductCard";
-import { SearchWithSuggestions } from "@/components/SearchWithSuggestions";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { cottonProducts, ethnicProducts, trouserProducts } from "@/data/products";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowLeft, Filter, Search, X } from "lucide-react";
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { collection, query, where, getDocs, orderBy, limit, DocumentData } from "firebase/firestore";
+import { firestore } from "@/lib/firebase";
 
 const SearchResults = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -17,119 +17,96 @@ const SearchResults = () => {
   const [searchResults, setSearchResults] = useState<Product[]>([]);
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
   const [showFilters, setShowFilters] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
   
   // Filter states
-  const [selectedBrand, setSelectedBrand] = useState<string>('all');
-  const [selectedPriceRange, setSelectedPriceRange] = useState<string>('all');
-  const [selectedMaterial, setSelectedMaterial] = useState<string>('all');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [selectedPriceRange, setSelectedPriceRange] = useState<string>('all');
 
-  const query = searchParams.get('q') || '';
-  const searchType = searchParams.get('type') || '';
-  const searchCategory = searchParams.get('category') || '';
-  const allProducts = [...cottonProducts, ...trouserProducts, ...ethnicProducts];
+  const queryParam = searchParams.get('q') || '';
+  const categories = ["Shirt Fabrics", "Trouser Fabrics", "Indo-Western"];
 
   useEffect(() => {
-    if (query.trim()) {
-      performSearch(query, searchType, searchCategory);
+    if (queryParam.trim()) {
+      performSearch(queryParam);
     }
-  }, [query, searchType, searchCategory, selectedBrand, selectedPriceRange, selectedMaterial, selectedCategory]);
+  }, [queryParam, selectedCategory, selectedPriceRange]);
 
-  const performSearch = (searchQuery: string, type?: string, category?: string) => {
-    const searchTerm = searchQuery.toLowerCase();
-    let results = [];
+  const performSearch = async (searchQuery: string) => {
+    if (!searchQuery.trim()) return;
     
-    // Smart search based on type from suggestions
-    if (type === 'brand') {
-      results = allProducts.filter(product => 
-        product.brand?.toLowerCase().includes(searchTerm) ||
-        product.name.toLowerCase().includes(searchTerm) // fallback to name if no brand
+    setIsSearching(true);
+    try {
+      const searchTerm = searchQuery.trim().toLowerCase();
+      const productsRef = collection(firestore, "products");
+      
+      // Fetch active products and filter client-side for title search
+      const q = query(
+        productsRef,
+        where("active", "==", true),
+        orderBy("title"),
+        limit(100)
       );
-    } else if (type === 'material') {
-      results = allProducts.filter(product => 
-        product.material?.toLowerCase().includes(searchTerm)
-      );
-    } else if (type === 'category') {
-      results = allProducts.filter(product => {
-        const productCategory = getProductCategory(product);
-        return productCategory.toLowerCase().includes(searchTerm);
-      });
-    } else {
-      // General search across all fields
-      results = allProducts.filter(product => 
-        product.name.toLowerCase().includes(searchTerm) ||
-        product.description.toLowerCase().includes(searchTerm) ||
-        (product.material?.toLowerCase().includes(searchTerm)) ||
-        (product.brand?.toLowerCase().includes(searchTerm))
-      );
-    }
 
-    // Apply additional filters
-    if (selectedBrand !== 'all') {
-      results = results.filter(product => product.brand === selectedBrand);
-    }
-    
-    if (selectedMaterial !== 'all') {
-      results = results.filter(product => product.material === selectedMaterial);
-    }
-    
-    if (selectedPriceRange !== 'all') {
-      const [min, max] = selectedPriceRange.split('-').map(Number);
-      results = results.filter(product => {
-        const price = product.price;
-        if (max) {
-          return price >= min && price <= max;
-        } else {
-          return price >= min; // For "500+" range
+      const querySnapshot = await getDocs(q);
+      const results: Product[] = [];
+
+      querySnapshot.forEach((doc) => {
+        const data = doc.data() as DocumentData;
+        const productTitle = (data.title as string) || "";
+        
+        // Check if title contains search term (case-insensitive)
+        if (productTitle.toLowerCase().includes(searchTerm)) {
+          results.push({
+            id: doc.id,
+            name: (data.title as string) || "",
+            description: (data.description as string) || "",
+            price: (data.variants?.[0]?.price as number) || 0,
+            image: (data.variants?.[0]?.images?.[0] as string) || "",
+            material: (data.material as string) || "",
+            category: (data.category as string) || "",
+          });
         }
       });
-    }
-    
-    if (selectedCategory !== 'all') {
-      results = results.filter(product => {
-        const productCategory = getProductCategory(product);
-        return productCategory === selectedCategory;
-      });
-    }
 
-    // Related products - broader search for similar terms (only if not too many results)
-    let related = [];
-    if (results.length < 10) {
-      const relatedTerms = searchTerm.split(' ');
-      related = allProducts.filter(product => {
-        if (results.some(p => p.id === product.id)) return false;
-        
-        return relatedTerms.some(term => 
-          term.length > 2 && (
-            product.name.toLowerCase().includes(term) ||
-            product.description.toLowerCase().includes(term) ||
-            (product.material && product.material.toLowerCase().includes(term))
-          )
-        );
-      });
-    }
+      // Apply filters
+      let filteredResults = [...results];
+      
+      if (selectedCategory !== 'all') {
+        filteredResults = filteredResults.filter(product => product.category === selectedCategory);
+      }
+      
+      if (selectedPriceRange !== 'all') {
+        const [min, max] = selectedPriceRange.split('-').map(Number);
+        filteredResults = filteredResults.filter(product => {
+          const price = product.price;
+          if (max) {
+            return price >= min && price <= max;
+          } else {
+            return price >= min; // For "5000+" range
+          }
+        });
+      }
 
-    setSearchResults(results);
-    setRelatedProducts(related.slice(0, 8));
-  };
-  
-  const getProductCategory = (product: Product) => {
-    if (cottonProducts.includes(product)) return 'Cotton';
-    if (trouserProducts.includes(product)) return 'Trouser';
-    if (ethnicProducts.includes(product)) return 'Ethnic';
-    return 'Other';
+      setSearchResults(filteredResults);
+      setRelatedProducts([]);
+    } catch (error) {
+      console.error("Error searching products:", error);
+      toast({
+        title: "Search Error",
+        description: "Failed to search products. Please try again.",
+        variant: "destructive",
+      });
+      setSearchResults([]);
+    } finally {
+      setIsSearching(false);
+    }
   };
   
   const clearFilters = () => {
-    setSelectedBrand('all');
-    setSelectedPriceRange('all');
-    setSelectedMaterial('all');
     setSelectedCategory('all');
+    setSelectedPriceRange('all');
   };
-  
-  const uniqueBrands = [...new Set(allProducts.map(p => p.brand).filter(Boolean))] as string[];
-  const uniqueMaterials = [...new Set(allProducts.map(p => p.material).filter(Boolean))] as string[];
-  const categories = ['Cotton', 'Trouser', 'Ethnic'];
 
   const handleAddToCart = (product: Product) => {
     try {
@@ -189,10 +166,24 @@ const SearchResults = () => {
               Back
             </Button>
             <div className="flex-1 max-w-md">
-              <SearchWithSuggestions 
-                onSearchChange={handleNewSearch}
-                initialValue={query}
-              />
+              <div className="relative">
+                <input
+                  type="text"
+                  value={queryParam}
+                  onChange={(e) => {
+                    const newSearchParams = new URLSearchParams(searchParams);
+                    if (e.target.value.trim()) {
+                      newSearchParams.set('q', e.target.value.trim());
+                    } else {
+                      newSearchParams.delete('q');
+                    }
+                    setSearchParams(newSearchParams);
+                  }}
+                  placeholder="Search for fabrics..."
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                />
+                <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+              </div>
             </div>
           </div>
         </div>
@@ -205,7 +196,7 @@ const SearchResults = () => {
             Search Results
           </h1>
           <p className="text-xl text-gray-600 mb-4">
-            {query ? `Results for "${query}"` : 'Enter a search term to find products'}
+            {queryParam ? `Results for "${queryParam}"` : 'Enter a search term to find products'}
           </p>
           
           {/* Filter Toggle and Results Count */}
@@ -226,16 +217,6 @@ const SearchResults = () => {
               </Button>
             )}
           </div>
-          
-          {/* Active Search Type Badge */}
-          {searchType && (
-            <div className="flex justify-center mb-4">
-              <Badge variant="secondary" className="text-sm px-3 py-1">
-                Searching in: {searchType.charAt(0).toUpperCase() + searchType.slice(1)}s
-                {searchCategory && ` (${searchCategory})`}
-              </Badge>
-            </div>
-          )}
         </div>
 
         {/* Filters Section */}
@@ -255,7 +236,7 @@ const SearchResults = () => {
                 </Button>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Category Filter */}
                 <div>
                   <label className="text-sm font-medium text-gray-700 block mb-2">Category</label>
@@ -271,42 +252,6 @@ const SearchResults = () => {
                     </SelectContent>
                   </Select>
                 </div>
-
-                {/* Brand Filter */}
-                {uniqueBrands.length > 0 && (
-                  <div>
-                    <label className="text-sm font-medium text-gray-700 block mb-2">Brand</label>
-                    <Select value={selectedBrand} onValueChange={setSelectedBrand}>
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="All Brands" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">All Brands</SelectItem>
-                        {uniqueBrands.map(brand => (
-                          <SelectItem key={brand} value={brand}>{brand}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                )}
-
-                {/* Material Filter */}
-                {uniqueMaterials.length > 0 && (
-                  <div>
-                    <label className="text-sm font-medium text-gray-700 block mb-2">Material</label>
-                    <Select value={selectedMaterial} onValueChange={setSelectedMaterial}>
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="All Materials" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">All Materials</SelectItem>
-                        {uniqueMaterials.map(material => (
-                          <SelectItem key={material} value={material}>{material}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                )}
 
                 {/* Price Range Filter */}
                 <div>
@@ -330,7 +275,7 @@ const SearchResults = () => {
           </Card>
         )}
 
-        {query ? (
+        {queryParam ? (
           <>
             {searchResults.length > 0 ? (
               <>
@@ -368,80 +313,7 @@ const SearchResults = () => {
                   </section>
                 )}
               </>
-            ) : (
-              /* No Results */
-              <div className="text-center py-16">
-                <Card className="max-w-md mx-auto border-0 shadow-xl">
-                  <CardContent className="p-8">
-                    <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Search className="h-10 w-10 text-gray-400" />
-                    </div>
-                    <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                      No Results Found
-                    </h3>
-                    <p className="text-gray-600 mb-6">
-                      We couldn't find any products matching "{query}". Try searching with different keywords.
-                    </p>
-                    <div className="space-y-3">
-                      <p className="text-sm text-gray-500 font-medium">Search suggestions:</p>
-                      <div className="flex flex-wrap gap-2 justify-center">
-                        {['Cotton', 'Linen', 'Silk', 'Raymond', 'Trouser', 'Ethnic'].map(suggestion => (
-                          <Button
-                            key={suggestion}
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleNewSearch(suggestion)}
-                            className="text-xs"
-                          >
-                            {suggestion}
-                          </Button>
-                        ))}
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            )}
-
-            {/* Search Tips */}
-            <div className="mt-20">
-              <Card className="border-0 shadow-lg bg-gradient-to-r from-purple-50 to-pink-50">
-                <CardContent className="p-8">
-                  <h3 className="text-xl font-playfair font-bold text-center mb-6 text-gray-800">
-                    Search Tips
-                  </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-                    <div>
-                      <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                        <span className="text-xl">🔍</span>
-                      </div>
-                      <h4 className="font-semibold text-lg mb-2">Product Names</h4>
-                      <p className="text-gray-600 text-sm">
-                        Search by specific product names like "Linen", "Cotton", or "Dobby"
-                      </p>
-                    </div>
-                    <div>
-                      <div className="w-12 h-12 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                        <span className="text-xl">🏷️</span>
-                      </div>
-                      <h4 className="font-semibold text-lg mb-2">Brand Names</h4>
-                      <p className="text-gray-600 text-sm">
-                        Find products by brands like "Raymond", "Arvind", or "Siyaram"
-                      </p>
-                    </div>
-                    <div>
-                      <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                        <span className="text-xl">🧶</span>
-                      </div>
-                      <h4 className="font-semibold text-lg mb-2">Materials</h4>
-                      <p className="text-gray-600 text-sm">
-                        Search by fabric types like "Silk", "Wool", or "Cotton Blend"
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+            ) : null}
           </>
         ) : (
           /* Empty State */

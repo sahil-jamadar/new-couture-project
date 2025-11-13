@@ -3,19 +3,28 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { signInWithEmail, signInWithGoogle, signUpWithEmail } from '@/lib/authService-simple';
 import { FirebaseError } from 'firebase/app';
 import { ArrowLeft, Chrome, Eye, EyeOff, Lock, Mail, Sparkles, User } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { isLoggedIn, isLoading: authLoading } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  
+  // Redirect logged-in users away from login page
+  useEffect(() => {
+    if (!authLoading && isLoggedIn) {
+      navigate('/');
+    }
+  }, [isLoggedIn, authLoading, navigate]);
   
   // Login form state
   const [loginData, setLoginData] = useState({
@@ -147,6 +156,23 @@ export default function Login() {
       setIsLoading(false);
     }
   };
+
+  // Show loading while checking auth state
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-hero flex items-center justify-center">
+        <div className="flex items-center gap-3">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+          <span className="text-muted-foreground">Loading...</span>
+        </div>
+      </div>
+    );
+  }
+
+  // Don't render login page if user is already logged in (will redirect)
+  if (isLoggedIn) {
+    return null;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-hero flex items-center justify-center p-4 relative overflow-hidden">

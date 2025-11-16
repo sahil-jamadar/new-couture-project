@@ -234,7 +234,7 @@ export default function CollectionPage() {
                 The Coutures
               </h2>
               <p className="text-white/90 text-xl italic tracking-wide">
-                "your style, our signature"
+                "Your Style, Our Signature"
               </p>
             </div>
             

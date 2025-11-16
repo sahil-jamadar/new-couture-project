@@ -8,13 +8,13 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { validateStock } from "@/lib/orderService";
-import { ArrowLeft, Minus, Plus, Scissors, Trash2, AlertCircle } from "lucide-react";
+import { AlertCircle, ArrowLeft, Minus, Plus, Scissors, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -143,8 +143,7 @@ export const Cart = () => {
     (sum, item) => sum + item.price * item.quantity,
     0
   );
-  const tax = subtotal * 0.18; // 18% GST
-  const total = subtotal + tax;
+  const total = subtotal;
 
   if (cartItems.length === 0) {
     return (
@@ -310,10 +309,6 @@ export const Cart = () => {
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Subtotal</span>
                     <span className="font-medium">₹{subtotal.toLocaleString()}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">GST (18%)</span>
-                    <span className="font-medium">₹{tax.toLocaleString()}</span>
                   </div>
                   <div className="border-t pt-3 flex justify-between">
                     <span className="font-bold text-lg">Total</span>

@@ -1,5 +1,3 @@
-import { ShareDialog } from "@/components/ShareDialog";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useProduct } from "@/contexts/ProductContext";
 import { ShoppingCart } from "lucide-react";
@@ -141,15 +139,15 @@ export const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
           </div>
         )}
       </div>
-      <CardContent className="p-3 sm:p-4">
-        <div className="space-y-2">
+      <CardContent className="p-2 sm:p-3 md:p-4">
+        <div className="space-y-1 sm:space-y-2">
           {/* Title */}
-          <h3 className="font-playfair font-bold text-sm sm:text-base text-gray-900 line-clamp-2 group-hover:text-primary transition-colors duration-300 min-h-[2.5rem]">
+          <h3 className="font-playfair font-bold text-xs sm:text-sm md:text-base text-gray-900 line-clamp-2 group-hover:text-primary transition-colors duration-300 min-h-[2rem] sm:min-h-[2.5rem]">
             {productName}
           </h3>
 
           {/* Brand & Material */}
-          <div className="flex items-center gap-2 text-xs">
+          <div className="flex items-center gap-1 sm:gap-2 text-[10px] sm:text-xs">
             {product.brand && (
               <span className="text-primary/80 font-semibold uppercase tracking-wide">
                 {product.brand}
@@ -170,41 +168,41 @@ export const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
             {product.description}
           </p> */}
 
-          <div className="flex gap-4 items-center">
+          <div className="flex gap-2 sm:gap-4 items-center">
             {/* Price Section */}
             <div className="flex items-baseline justify-between flex-1">
-              <div className="flex flex-col py-2">
+              <div className="flex flex-col py-1 sm:py-2">
                 {priceRange ? (
-                  <span className="text-lg sm:text-xl font-bold text-gray-900">
+                  <span className="text-sm sm:text-lg md:text-xl font-bold text-gray-900">
                     ₹{priceRange.min.toLocaleString()} - ₹{priceRange.max.toLocaleString()}
                   </span>
                 ) : (
-                  <span className="text-lg sm:text-xl font-bold text-gray-900">
+                  <span className="text-sm sm:text-lg md:text-xl font-bold text-gray-900">
                     ₹{priceDisplay?.toLocaleString() || '0'}
                   </span>
                 )}
                 {product.category && (
-                  <span className="text-xs text-gray-500 capitalize">
+                  <span className="text-[10px] sm:text-xs text-gray-500 capitalize">
                     {product.category}
                   </span>
                 )}
               </div>
             </div>
 
-            {/* Add to Cart: icon-only on small screens, full text on sm+ */}
+            {/* Add to Cart: icon-only on small screens, full text on md+ */}
             <div className="flex-shrink-0">
               <button
                 onClick={(e) => { e.stopPropagation(); onAddToCart(product); }}
-                className="sm:hidden inline-flex items-center justify-center h-10 w-10 rounded-md bg-gray-900 text-white hover:bg-black transition-colors"
+                className="md:hidden inline-flex items-center justify-center h-8 w-8 sm:h-10 sm:w-10 rounded-md bg-gray-900 text-white hover:bg-black transition-colors"
                 aria-label="Add to cart"
                 title="Add to cart"
               >
-                <ShoppingCart className="h-4 w-4" />
+                <ShoppingCart className="h-3 w-3 sm:h-4 sm:w-4" />
               </button>
 
               <button
                 onClick={(e) => { e.stopPropagation(); onAddToCart(product); }}
-                className="hidden sm:inline-flex items-center gap-2 px-3 py-2 bg-gray-900 hover:bg-black text-white rounded-md transition-colors font-medium text-sm"
+                className="hidden md:inline-flex items-center gap-2 px-3 py-2 bg-gray-900 hover:bg-black text-white rounded-md transition-colors font-medium text-sm"
               >
                 <ShoppingCart className="h-4 w-4" />
                 Add to Cart

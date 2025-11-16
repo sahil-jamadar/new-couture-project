@@ -1,10 +1,11 @@
+import Footer from "@/components/Footer";
 import { Header } from "@/components/Header";
-import { ProductCard, Product } from "@/components/ProductCard";
+import { Product, ProductCard } from "@/components/ProductCard";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getAllActiveProducts, Product as FirebaseProduct } from "@/lib/collectionService";
 import { useToast } from "@/hooks/use-toast";
-import { useState, useEffect, useMemo } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { Product as FirebaseProduct, getAllActiveProducts } from "@/lib/collectionService";
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 const CategoryProducts = () => {
   const { category } = useParams<{ category: string }>();
@@ -161,17 +162,17 @@ const CategoryProducts = () => {
 
         {/* Products Grid */}
         {productsLoading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
             {[...Array(8)].map((_, i) => (
-              <div key={i} className="space-y-3">
-                <Skeleton className="h-80 w-full rounded-lg" />
-                <Skeleton className="h-4 w-3/4" />
-                <Skeleton className="h-3 w-1/2" />
+              <div key={i} className="space-y-2 sm:space-y-3">
+                <Skeleton className="h-48 sm:h-80 w-full rounded-lg" />
+                <Skeleton className="h-3 sm:h-4 w-3/4" />
+                <Skeleton className="h-2 sm:h-3 w-1/2" />
               </div>
             ))}
           </div>
         ) : categoryProducts.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
             {categoryProducts.map((product) => (
               <ProductCard
                 key={product.id}
@@ -189,35 +190,7 @@ const CategoryProducts = () => {
         )}
       </div>
 
-      {/* Footer */}
-      <footer className="relative mt-20 overflow-hidden">
-        <div className="absolute inset-0 bg-gray-900" />
-        <div className="relative z-10 py-16">
-          <div className="container mx-auto px-4 text-center">
-            <div className="mb-8">
-              <h2 className="font-playfair text-4xl font-bold mb-3 text-white">
-                The Coutures
-              </h2>
-              <p className="text-white/90 text-xl italic tracking-wide">
-                "your style, our signature"
-              </p>
-            </div>
-            <div className="flex items-center justify-center mb-8">
-              <div className="w-16 h-px bg-white/30" />
-              <div className="mx-4 w-2 h-2 bg-white/50 rounded-full" />
-              <div className="w-16 h-px bg-white/30" />
-            </div>
-            <div className="space-y-2">
-              <p className="text-white/80 text-lg">
-                Premium Fabrics & Luxury Apparel
-              </p>
-              <p className="text-white/60 text-sm">
-                © 2025 The Coutures. Crafting Excellence Since Today.
-              </p>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };

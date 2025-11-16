@@ -9,9 +9,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
-import { useState } from 'react';
-import { createTailoringAppointment } from "@/lib/tailoringService";
 import { useAuth } from "@/contexts/AuthContext";
+import { createTailoringAppointment } from "@/lib/tailoringService";
+import { useState } from 'react';
 
 interface TailoringServiceFormProps {
   isOpen: boolean;
@@ -180,6 +180,19 @@ export const TailoringServiceForm = ({ isOpen, onClose }: TailoringServiceFormPr
             Enter your details below and our expert tailoring team will visit you at your preferred location.
           </DialogDescription>
         </DialogHeader>
+
+        {/* Charges Information Banner */}
+        <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 flex items-start gap-3">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <div className="flex-1">
+            <p className="text-sm font-semibold text-amber-900 mb-1">Tailoring Charges Apply</p>
+            <p className="text-xs text-amber-800 leading-relaxed">
+              Please note that tailoring service charges will be applicable based on the type of garment and customization required. Our team will provide you with a detailed quote during the consultation.
+            </p>
+          </div>
+        </div>
         
         {/* Loading overlay */}
         {isSubmitting && (

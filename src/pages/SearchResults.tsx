@@ -4,11 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import { firestore } from "@/lib/firebase";
+import { collection, DocumentData, getDocs, limit, orderBy, query, where } from "firebase/firestore";
 import { ArrowLeft, Filter, Search, X } from "lucide-react";
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { collection, query, where, getDocs, orderBy, limit, DocumentData } from "firebase/firestore";
-import { firestore } from "@/lib/firebase";
 
 const SearchResults = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -284,7 +284,7 @@ const SearchResults = () => {
                   <h2 className="text-2xl font-playfair font-bold text-gray-800 mb-8">
                     Search Results ({searchResults.length})
                   </h2>
-                  <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-8">
+                  <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
                     {searchResults.map((product) => (
                       <ProductCard
                         key={product.id}
@@ -301,7 +301,7 @@ const SearchResults = () => {
                     <h2 className="text-2xl font-playfair font-bold text-gray-800 mb-8">
                       Related Products ({relatedProducts.length})
                     </h2>
-                    <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-8">
+                    <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
                       {relatedProducts.map((product) => (
                         <ProductCard
                           key={product.id}

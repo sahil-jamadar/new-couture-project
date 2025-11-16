@@ -28,6 +28,17 @@ All colors MUST be HSL.
 */
 
 @layer base {
+  /* Mobile-first responsive improvements */
+  html {
+    font-size: 16px;
+  }
+  
+  @media (max-width: 640px) {
+    html {
+      font-size: 14px;
+    }
+  }
+
   :root {
     /* Clean White Theme Color System */
     --background: 0 0% 100%;
@@ -336,5 +347,86 @@ All colors MUST be HSL.
     inset: 0;
     background: radial-gradient(circle at 30% 40%, rgba(255,255,255,0.1) 0%, transparent 50%);
     pointer-events: none;
+  }
+
+  /* Mobile-optimized responsive utilities */
+  .mobile-container {
+    @apply px-3 sm:px-6 lg:px-8;
+  }
+
+  .mobile-text-xs {
+    @apply text-xs sm:text-sm md:text-base;
+  }
+
+  .mobile-text-sm {
+    @apply text-sm sm:text-base md:text-lg;
+  }
+
+  .mobile-text-base {
+    @apply text-base sm:text-lg md:text-xl;
+  }
+
+  .mobile-text-lg {
+    @apply text-lg sm:text-xl md:text-2xl;
+  }
+
+  .mobile-gap {
+    @apply gap-3 sm:gap-6 lg:gap-8;
+  }
+
+  .mobile-padding {
+    @apply p-2 sm:p-4 md:p-6;
+  }
+
+  /* Responsive grid utilities */
+  .grid-mobile-2 {
+    @apply grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4;
+  }
+
+  .grid-mobile-1 {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4;
+  }
+
+  /* Touch-friendly buttons on mobile */
+  @media (max-width: 640px) {
+    button, a[role="button"] {
+      min-height: 44px;
+      min-width: 44px;
+    }
+  }
+
+  /* Improved mobile image handling */
+  .responsive-image {
+    @apply w-full h-auto object-cover;
+  }
+
+  .responsive-hero-image {
+    @apply w-full h-full object-cover object-center sm:object-top;
+  }
+
+  /* Mobile-optimized card spacing */
+  .mobile-card-content {
+    @apply p-2 sm:p-3 md:p-4;
+  }
+
+  /* Prevent horizontal scroll on mobile */
+  body {
+    @apply overflow-x-hidden;
+  }
+
+  /* Better mobile typography */
+  @media (max-width: 640px) {
+    h1 {
+      @apply text-2xl;
+    }
+    h2 {
+      @apply text-xl;
+    }
+    h3 {
+      @apply text-lg;
+    }
+    h4 {
+      @apply text-base;
+    }
   }
 }

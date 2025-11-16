@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
-import { Header } from "@/components/Header";
 import Footer from "@/components/Footer";
-import { ProductCard, Product } from "@/components/ProductCard";
-import { getAllActiveProducts } from "@/lib/collectionService";
+import { Header } from "@/components/Header";
+import { Product, ProductCard } from "@/components/ProductCard";
 import { useToast } from "@/hooks/use-toast";
+import { getAllActiveProducts } from "@/lib/collectionService";
+import { useEffect, useState } from "react";
 
 const AllProducts = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -91,7 +91,7 @@ const AllProducts = () => {
             <p className="text-gray-500 max-w-md mx-auto">There are no products to show right now.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
             {products.map((prod) => (
               <div key={prod.id} className="opacity-0 animate-fade-in" style={{ animationFillMode: 'forwards' }}>
                 <ProductCard product={prod} onAddToCart={handleAddToCart} />

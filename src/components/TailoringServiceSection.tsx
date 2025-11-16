@@ -1,7 +1,6 @@
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Calendar, MapPin, Phone, Scissors, Star, Users } from "lucide-react";
+import { MapPin, Phone, Scissors, Star, Users } from "lucide-react";
 
 interface TailoringServiceSectionProps {
   onBookService: () => void;
@@ -45,45 +44,40 @@ export const TailoringServiceSection = ({ onBookService, category }: TailoringSe
   const serviceInfo = getCategorySpecificServices();
 
   return (
-    <section className="py-8 sm:py-12 lg:py-16 relative overflow-hidden">
-      {/* Clean Background */}
-      <div className="absolute inset-0 bg-white" />
-      
-      {/* Subtle Pattern */}
-      <div className="absolute inset-0 opacity-30">
-        <div className="absolute inset-0" style={{
-          backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(0,0,0,0.03) 1px, transparent 0)',
-          backgroundSize: '40px 40px'
-        }} />
-      </div>
-      
-      {/* Minimal Accent Elements */}
-      <div className="absolute top-20 right-10 w-40 h-40 bg-purple-100 rounded-full blur-3xl opacity-20" />
-      <div className="absolute bottom-20 left-10 w-40 h-40 bg-blue-100 rounded-full blur-3xl opacity-20" />
+    <section className="py-8 sm:py-12 lg:py-16 relative overflow-hidden bg-gradient-to-br from-purple-50 via-pink-50 to-white">
+      {/* Decorative Elements */}
+      <div className="absolute top-20 right-10 w-64 h-64 bg-purple-200 rounded-full blur-3xl opacity-30" />
+      <div className="absolute bottom-20 left-10 w-64 h-64 bg-pink-200 rounded-full blur-3xl opacity-30" />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Professional Section Header */}
+        {/* Premium Header Section */}
         <div className="text-center mb-10 lg:mb-12">
-          <div className="flex items-center justify-center mb-6">
-            <div className="w-12 h-px bg-gray-300" />
-            <div className="mx-4 w-1.5 h-1.5 bg-purple-600 rounded-full" />
-            <div className="w-12 h-px bg-gray-300" />
+          <div className="inline-flex items-center justify-center gap-3 mb-4 animate-bounce">
+            <span className="text-4xl">👑</span>
           </div>
           
-          <div className="inline-flex items-center gap-3 mb-6">
-            <div className="text-3xl">{serviceInfo.icon}</div>
-            <Badge className="bg-purple-600 text-white px-4 py-1.5 text-sm font-medium">
-              Premium Service
-            </Badge>
-          </div>
-          
-          <h2 className="font-playfair text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 tracking-tight">
-            {serviceInfo.title}
+          <h2 className="font-playfair text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 tracking-tight">
+            PREMIUM TAILORING SERVICE
           </h2>
           
-          <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            {serviceInfo.description}
-          </p>
+          <div className="flex items-center justify-center gap-3 flex-wrap mb-4">
+            <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm border border-gray-200">
+              <span className="text-xl">✨</span>
+              <span className="text-sm font-medium text-gray-700">Expert Custom Tailoring</span>
+              <span className="text-xl">✨</span>
+            </div>
+          </div>
+          
+          <div className="flex items-center justify-center gap-4 flex-wrap">
+            <div className="flex items-center gap-2 bg-gradient-to-r from-purple-100 to-purple-50 px-4 py-2 rounded-full">
+              <span className="text-lg">⚡</span>
+              <span className="text-sm font-semibold text-purple-900">Perfect Fit Guaranteed</span>
+            </div>
+            <div className="flex items-center gap-2 bg-gradient-to-r from-pink-100 to-pink-50 px-4 py-2 rounded-full">
+              <span className="text-lg">❤️</span>
+              <span className="text-sm font-semibold text-pink-900">Premium Quality</span>
+            </div>
+          </div>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start max-w-6xl mx-auto">
@@ -102,22 +96,23 @@ export const TailoringServiceSection = ({ onBookService, category }: TailoringSe
               ))}
             </div>
 
-            {/* CTA Button */}
+            {/* CTA Button with Enhanced Design */}
             <Button 
               onClick={onBookService}
-              className="w-full bg-purple-600 hover:bg-purple-700 text-white px-6 py-6 text-base font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-300 group"
+              className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-6 py-6 text-base font-bold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group relative overflow-hidden"
             >
-              <Calendar className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
-              Book Appointment
+              <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
+              <div className="relative flex items-center justify-center gap-2">
+                <Phone className="h-5 w-5 group-hover:scale-110 transition-transform" />
+                <span>📞 Book Appointment</span>
+              </div>
             </Button>
             
-            {/* Contact Info */}
-            <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+            {/* Enhanced Contact Info */}
+            <div className="p-4 bg-white rounded-xl border-2 border-purple-200 shadow-md">
               <div className="flex items-center justify-center gap-2 text-gray-700">
-                <Phone className="h-4 w-4 text-purple-600" />
-                <span className="font-medium">+91 98765 43210</span>
-                <span className="text-gray-400">|</span>
-                <span className="text-sm text-gray-600">Available 9 AM - 8 PM</span>
+                <span className="text-sm">•</span>
+                <span className="text-sm font-semibold text-purple-700">Home Measurements Available</span>
               </div>
             </div>
           </div>

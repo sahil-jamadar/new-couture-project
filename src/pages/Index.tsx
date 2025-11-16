@@ -1,16 +1,27 @@
+import Footer from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
-import { ProductCard, Product } from "@/components/ProductCard";
+import { Product, ProductCard } from "@/components/ProductCard";
 import { ScrollingBanner } from "@/components/ScrollingBanner";
 import { TailoringServiceForm } from "@/components/TailoringServiceForm";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Button } from "@/components/ui/button";
-import { getAllActiveProducts, Product as FirebaseProduct } from "@/lib/collectionService";
-import { useToast } from "@/hooks/use-toast";
-import { useAuth } from "@/contexts/AuthContext";
-import { useMemo, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { TailoringServiceSection } from "@/components/TailoringServiceSection";
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
+import { Product as FirebaseProduct, getAllActiveProducts } from "@/lib/collectionService";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 // Constants
 const CATEGORIES = ["Shirt Fabrics", "Trouser Fabrics", "Indo-Western"];
@@ -19,6 +30,7 @@ const MAX_PRODUCTS_PER_CATEGORY = 8;
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isTailoringFormOpen, setIsTailoringFormOpen] = useState(false);
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   const [allProducts, setAllProducts] = useState<FirebaseProduct[]>([]);
   const [productsLoading, setProductsLoading] = useState(true);
   const { toast } = useToast();
@@ -49,14 +61,11 @@ const Index = () => {
     }
     
     if (!isLoggedIn) {
-      toast({
-        title: "Login Required",
-        description: "Please log in to book a tailoring service",
-        variant: "destructive",
-      });
-      navigate('/login');
+      // Show login prompt if user is not logged in
+      setShowLoginPrompt(true);
       return;
     }
+    
     setIsTailoringFormOpen(true);
   };
 
@@ -235,18 +244,18 @@ const Index = () => {
 
                   {/* Products Grid */}
                   {productsLoading ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
+                    <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
                       {[...Array(4)].map((_, i) => (
-                        <div key={i} className="space-y-3">
-                          <Skeleton className="h-80 w-full rounded-lg" />
-                          <Skeleton className="h-4 w-3/4" />
-                          <Skeleton className="h-3 w-1/2" />
+                        <div key={i} className="space-y-2 sm:space-y-3">
+                          <Skeleton className="h-48 sm:h-80 w-full rounded-lg" />
+                          <Skeleton className="h-3 sm:h-4 w-3/4" />
+                          <Skeleton className="h-2 sm:h-3 w-1/2" />
                         </div>
                       ))}
                     </div>
                   ) : categoryProducts.length > 0 ? (
                     <>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
+                      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
                         {categoryProducts.map((product) => (
                           <ProductCard
                             key={product.id}
@@ -278,49 +287,55 @@ const Index = () => {
 
           {/* Premium Tailoring Service */}
             <TailoringServiceSection 
-              onBookService={() => setIsTailoringFormOpen(true)}
+              onBookService={handleOpenTailoringForm}
               category="ethnic"
             />
         </div>
       </div>
 
-      {/* Enhanced Professional Footer */}
-      <footer className="relative mt-20 overflow-hidden">
-        {/* Footer Background */}
-        <div className="absolute inset-0 bg-gray-900" />
-        
-        {/* Footer Content */}
-        <div className="relative z-10 py-16">
-          <div className="container mx-auto px-4 text-center">
-            {/* Logo and Branding */}
-            <div className="mb-8">
-              <h2 className="font-playfair text-4xl font-bold mb-3 text-white">
-                The Coutures
-              </h2>
-              <p className="text-white/90 text-xl italic tracking-wide">
-                "your style, our signature"
-              </p>
-            </div>
-            
-            {/* Decorative Line */}
-            <div className="flex items-center justify-center mb-8">
-              <div className="w-16 h-px bg-white/30" />
-              <div className="mx-4 w-2 h-2 bg-white/50 rounded-full" />
-              <div className="w-16 h-px bg-white/30" />
-            </div>
-            
-            {/* Footer Info */}
-            <div className="space-y-2">
-              <p className="text-white/80 text-lg">
-                Premium Fabrics & Luxury Apparel
-              </p>
-              <p className="text-white/60 text-sm">
-                © 2025 The Coutures. Crafting Excellence Since Today.
-              </p>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer />
+
+      {/* Login Prompt Dialog */}
+      <AlertDialog open={showLoginPrompt} onOpenChange={setShowLoginPrompt}>
+        <AlertDialogContent className="sm:max-w-[425px]">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-2xl font-playfair flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+              Login Required
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-base py-4">
+              <div className="space-y-3">
+                <p className="text-gray-700">
+                  You need to sign in to book a tailoring appointment.
+                </p>
+                <div className="bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-lg p-4">
+                  <p className="text-sm text-gray-800 font-medium mb-2">✨ Benefits of signing in:</p>
+                  <ul className="text-sm text-gray-700 space-y-1 ml-4">
+                    <li>• Track your appointments</li>
+                    <li>• Save your preferences</li>
+                    <li>• Faster booking process</li>
+                    <li>• View order history</li>
+                  </ul>
+                </div>
+              </div>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="flex-col sm:flex-row gap-2">
+            <AlertDialogCancel className="m-0">Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                setShowLoginPrompt(false);
+                navigate('/login');
+              }}
+              className="m-0 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+            >
+              Go to Login
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

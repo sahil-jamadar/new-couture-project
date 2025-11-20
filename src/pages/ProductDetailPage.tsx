@@ -1,17 +1,20 @@
+import SizeGuideImage from "@/assets/Size_Guide.png";
 import { Header } from "@/components/Header";
 import { ShareDialog } from "@/components/ShareDialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { useProduct } from "@/contexts/ProductContext";
-import { ColorVariant, getProductDetail } from "@/data/productDetails";
 import { useToast } from "@/hooks/use-toast";
+import { ColorVariant, getProductById } from "@/lib/collectionService";
 import {
-    ArrowLeft,
-    Heart,
-    Share2,
-    ShoppingCart
+  ArrowLeft,
+  Heart,
+  Ruler,
+  Share2,
+  ShoppingCart
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -43,28 +46,32 @@ const ProductDetailPage = () => {
 
   useEffect(() => {
     if (productId) {
-      const productDetail = getProductDetail(productId);
-      if (productDetail) {
-        setProduct(productDetail);
+      const loadProduct = async () => {
+        const productDetail = await getProductById(productId);
+        if (productDetail) {
+          setProduct(productDetail);
         
-        // If we have a selected product from homepage, use its image first
-        if (selectedProduct) {
-          setCurrentImage(selectedProduct.image);
-          // Don't auto-select any color variant - show original first
-        } else {
-          // Fallback: Set first available color as default if no product was selected
-          const firstAvailableColor = productDetail.colorVariants.find(
-            (v) => v.inStock
-          );
-          if (firstAvailableColor) {
-            setSelectedColor(firstAvailableColor.id);
-            setCurrentImage(firstAvailableColor.image);
+          // If we have a selected product from homepage, use its image first
+          if (selectedProduct) {
+            setCurrentImage(selectedProduct.image);
+            // Don't auto-select any color variant - show original first
+          } else {
+            // For new format with variants
+            if (productDetail.variants && productDetail.variants.length > 0) {
+              const firstVariant = productDetail.variants[0];
+              setCurrentImage(firstVariant.images[0]);
+            } else if (productDetail.images && productDetail.images.length > 0) {
+              // Fallback for old format
+              setCurrentImage(productDetail.images[0]);
+            }
           }
+        } else {
+          // Redirect to home if product not found
+          navigate("/");
         }
-      } else {
-        // Redirect to home if product not found
-        navigate("/");
-      }
+      };
+      
+      loadProduct();
     }
   }, [productId, selectedProduct, navigate]);
 
@@ -277,7 +284,7 @@ const ProductDetailPage = () => {
                       <button
                         onClick={() => {
                           setSelectedColor(variant.id);
-                          setCurrentImage(variant.image);
+                          setCurrentImage(variant.images[0]);
                         }}
                         disabled={!variant.inStock}
                         className={`relative w-full aspect-square rounded-xl overflow-hidden border-3 transition-all duration-300 ${
@@ -291,8 +298,8 @@ const ProductDetailPage = () => {
                         }`}
                       >
                         <img
-                          src={variant.image}
-                          alt={variant.name}
+                          src={variant.images[0]}
+                          alt={variant.colorName}
                           className="w-full h-full object-cover transition-transform duration-300"
                         />
                         {selectedColor === variant.id && (
@@ -319,7 +326,7 @@ const ProductDetailPage = () => {
                           !variant.inStock ? "text-muted-foreground/50" : ""
                         }`}
                       >
-                        {variant.name}
+                        {variant.colorName}
                       </p>
                     </div>
                   ))}
@@ -594,6 +601,30 @@ const ProductDetailPage = () => {
               </p>
             </CardContent>
           </Card>
+        </div>
+
+        {/* Size Guide */}
+        <div className="mt-6">
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="outline" className="w-full">
+                <Ruler className="mr-2 h-4 w-4" />
+                View Size Guide
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle className="text-2xl text-white">Size Guide</DialogTitle>
+              </DialogHeader>
+              <div className="mt-4">
+                <img 
+                  src={SizeGuideImage} 
+                  alt="Size Guide" 
+                  className="w-full h-auto rounded-lg shadow-lg"
+                />
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
       

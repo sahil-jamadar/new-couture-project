@@ -34,7 +34,7 @@ export const Hero = () => {
             {/* Elegant Slogan */}
             <div className="mb-3 sm:mb-4 md:mb-6">
               <p className="text-white/90 font-medium text-xs sm:text-base md:text-lg lg:text-xl tracking-wider italic text-shadow-glow">
-                "your style, our signature"
+                "Your Style, Our Signature"
               </p>
             </div>
             

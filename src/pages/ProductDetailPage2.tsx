@@ -1,34 +1,39 @@
-import { useEffect, useState, useMemo } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import SizeGuideImage from "@/assets/Size_Guide.png";
 import { Header } from "@/components/Header";
 import { ProductCard } from "@/components/ProductCard";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 import {
+    ColorVariant,
+    getColorVariantsByProduct,
     getProductById,
     getProductsByCollection,
-    getColorVariantsByProduct,
     Product,
-    ColorVariant,
 } from "@/lib/collectionService";
 import {
-    Heart,
-    Share2,
-    ShoppingCart,
-    Minus,
-    Plus,
-    Star,
-    Truck,
-    Shield,
-    RefreshCw,
+    Check,
     ChevronRight,
     Home,
-    Check,
-    Info,
+    Minus,
+    Plus,
+    RefreshCw,
+    Ruler,
+    Share2,
+    Shield,
+    ShoppingCart,
+    Truck
 } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 const ProductDetailPage2 = () => {
     const navigate = useNavigate();
@@ -660,22 +665,43 @@ const ProductDetailPage2 = () => {
                         </div>
 
                         {/* Trust Badges */}
-                        <div className="grid grid-cols-3 gap-4 pt-4">
-                            <div className="flex flex-col items-center text-center p-4 bg-gray-50 rounded-lg">
+                        <div className="grid grid-cols-4 gap-4 pt-4">
+                            <div className="flex flex-col items-center text-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
                                 <Truck className="w-6 h-6 text-gray-700 mb-2" />
                                 <p className="text-xs font-medium text-gray-900">Free Delivery</p>
                                 <p className="text-xs text-gray-600">Above ₹2000</p>
                             </div>
-                            <div className="flex flex-col items-center text-center p-4 bg-gray-50 rounded-lg">
+                            <div className="flex flex-col items-center text-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
                                 <RefreshCw className="w-6 h-6 text-gray-700 mb-2" />
                                 <p className="text-xs font-medium text-gray-900">Easy Returns</p>
                                 <p className="text-xs text-gray-600">7 Days Policy</p>
                             </div>
-                            <div className="flex flex-col items-center text-center p-4 bg-gray-50 rounded-lg">
+                            <div className="flex flex-col items-center text-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
                                 <Shield className="w-6 h-6 text-gray-700 mb-2" />
                                 <p className="text-xs font-medium text-gray-900">Secure Payment</p>
                                 <p className="text-xs text-gray-600">100% Safe</p>
                             </div>
+                            <Dialog>
+                                <DialogTrigger asChild>
+                                    <div className="flex flex-col items-center text-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer">
+                                        <Ruler className="w-6 h-6 text-gray-700 mb-2" />
+                                        <p className="text-xs font-medium text-gray-900">View Size Guide</p>
+                                        <p className="text-xs text-gray-600">Sizing Info</p>
+                                    </div>
+                                </DialogTrigger>
+                            <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden">
+                                <DialogHeader>
+                                    <DialogTitle className="text-2xl font-playfair font-bold">Size Guide</DialogTitle>
+                                </DialogHeader>
+                                <div className="relative overflow-auto max-h-[calc(90vh-120px)]">
+                                    <img 
+                                        src={SizeGuideImage} 
+                                        alt="Size Guide" 
+                                        className="w-full h-auto rounded-lg"
+                                    />
+                                </div>
+                            </DialogContent>
+                        </Dialog>
                         </div>
                     </div>
                 </div>
@@ -797,7 +823,7 @@ const ProductDetailPage2 = () => {
                                 The Coutures
                             </h2>
                             <p className="text-white/90 text-xl italic tracking-wide">
-                                "your style, our signature"
+                                "Your Style, Our Signature"
                             </p>
                         </div>
                         <div className="flex items-center justify-center mb-8">

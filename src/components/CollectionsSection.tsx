@@ -9,7 +9,7 @@ interface CollectionsSectionProps {
   collections: Collection[];
 }
 
-const CATEGORIES = ["Shirt Fabrics", "Trouser Fabrics", "Indo-Western"] as const;
+const CATEGORIES = ["Shirt Fabrics", "Trouser Fabrics", "Indo-Western", "Wedding Outfit"] as const;
 
 export const CollectionsSection = ({ id, title, subtitle, collections }: CollectionsSectionProps) => {
   // Display up to 8 collections

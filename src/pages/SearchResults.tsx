@@ -24,7 +24,7 @@ const SearchResults = () => {
   const [selectedPriceRange, setSelectedPriceRange] = useState<string>('all');
 
   const queryParam = searchParams.get('q') || '';
-  const categories = ["Shirt Fabrics", "Trouser Fabrics", "Indo-Western"];
+  const categories = ["Shirt Fabrics", "Trouser Fabrics", "Indo-Western", "Wedding Outfit"];
 
   useEffect(() => {
     if (queryParam.trim()) {

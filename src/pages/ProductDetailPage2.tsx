@@ -69,6 +69,9 @@ const ProductDetailPage2 = () => {
 
     // Load product data
     useEffect(() => {
+        // Scroll to top when component mounts or productId changes
+        window.scrollTo(0, 0);
+        
         const loadProductData = async () => {
             if (!productId) {
                 navigate("/");

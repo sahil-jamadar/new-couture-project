@@ -21,6 +21,7 @@ const CategoryProducts = () => {
     "shirt-fabrics": "Shirt Fabrics",
     "trouser-fabrics": "Trouser Fabrics",
     "indo-western": "Indo-Western",
+    "wedding-outfit": "Wedding Outfit"
   };
 
   const displayCategory = categoryMapping[category || ""] || category || "";

@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/contexts/AuthContext";
-import { Heart, LogOut, Menu, Settings, ShoppingCart, User, X, Calendar, Package } from "lucide-react";
+import { Calendar, LogOut, Menu, Package, Settings, ShoppingCart, User, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 

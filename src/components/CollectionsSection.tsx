@@ -1,6 +1,6 @@
-import { Collection } from "@/lib/collectionService";
 import { CollectionCard } from "@/components/CollectionCard";
 import { Badge } from "@/components/ui/badge";
+import { Collection } from "@/lib/collectionService";
 
 interface CollectionsSectionProps {
   id?: string;

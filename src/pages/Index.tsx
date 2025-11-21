@@ -24,7 +24,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 // Constants
-const CATEGORIES = ["Shirt Fabrics", "Trouser Fabrics", "Indo-Western"];
+const CATEGORIES = ["Shirt Fabrics", "Trouser Fabrics", "Indo-Western", "Wedding Outfit"];
 const MAX_PRODUCTS_PER_CATEGORY = 8;
 
 const Index = () => {
@@ -227,7 +227,7 @@ const Index = () => {
                   <div className="flex items-center justify-between mb-8">
                     <div>
                       <h2 className="font-playfair text-3xl md:text-4xl font-bold text-gray-900 uppercase tracking-wide">
-                        {category}
+                        {category==="Indo-Western" ? "Indo-Western Fabric" : category}
                       </h2>
                       <p className="text-gray-600 mt-2">Explore our premium collection</p>
                     </div>

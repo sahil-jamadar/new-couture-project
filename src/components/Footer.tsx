@@ -39,7 +39,7 @@ const Footer = () => {
                 <Link to="/category/trouser-fabrics" className="block text-white/70 hover:text-white transition-colors">
                   Trouser Fabrics
                 </Link>
-                <Link to="/category/indo-western" className="block text-white/70 hover:text-white transition-colors">
+                <Link to="/category/Indo-Western" className="block text-white/70 hover:text-white transition-colors">
                   Indo-Western
                 </Link>
               </div>

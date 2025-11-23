@@ -602,7 +602,9 @@ const ProductDetailPage2 = () => {
                             <span className="text-4xl font-bold text-gray-900">
                                 ₹{currentPrice.toLocaleString()}
                             </span>
-                            <span className="text-lg text-gray-500">per meter</span>
+                            <span className="text-muted-foreground text-sm">
+                      { product.category != "Wedding Outfit" ? "Per Meter" : "Full Outfit Rate"}
+                    </span>
                             {isInStock ? (
                                 <Badge className="ml-auto bg-green-50 text-green-700 border border-green-200">
                                     <Check className="w-3 h-3 mr-1" />

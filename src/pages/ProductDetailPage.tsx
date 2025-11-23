@@ -10,11 +10,11 @@ import { useProduct } from "@/contexts/ProductContext";
 import { useToast } from "@/hooks/use-toast";
 import { ColorVariant, getProductById } from "@/lib/collectionService";
 import {
-  ArrowLeft,
-  Heart,
-  Ruler,
-  Share2,
-  ShoppingCart
+    ArrowLeft,
+    Heart,
+    Ruler,
+    Share2,
+    ShoppingCart
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -29,6 +29,10 @@ const ProductDetailPage = () => {
   const [product, setProduct] = useState<any>(null);
   const [currentImage, setCurrentImage] = useState<string>("");
   const [isShareDialogOpen, setIsShareDialogOpen] = useState(false);
+
+
+  console.log("Hello from product detail page");
+  
 
   // Get cart from localStorage to display count
   const getCartItemCount = () => {
@@ -48,8 +52,12 @@ const ProductDetailPage = () => {
     if (productId) {
       const loadProduct = async () => {
         const productDetail = await getProductById(productId);
+        console.log("Product detail",productDetail);
+
         if (productDetail) {
           setProduct(productDetail);
+
+          
         
           // If we have a selected product from homepage, use its image first
           if (selectedProduct) {
@@ -396,7 +404,9 @@ const ProductDetailPage = () => {
                     <span className="text-3xl font-bold text-gradient-purple">
                       ₹{selectedColor ? selectedVariant.price.toLocaleString() : (selectedProduct?.price.toLocaleString() || selectedVariant.price.toLocaleString())}
                     </span>
-                    <p className="text-muted-foreground text-sm">per meter</p>
+                    <p className="text-muted-foreground text-sm">
+                      { product.category != "Wedding Outfit" ? "Per Meter" : ""}
+                    </p>
                   </div>
                 </div>
               </CardContent>

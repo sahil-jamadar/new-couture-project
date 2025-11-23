@@ -1,6 +1,10 @@
 import heroImage from "@/assets/hero-fashion-influencers.jpg";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 export const Hero = () => {
+  const navigate = useNavigate();
+  
   return (
     <section className="relative min-h-[50vh] sm:min-h-[60vh] md:min-h-[70vh] lg:min-h-[90vh] flex items-center justify-center overflow-hidden bg-white">
       {/* Background Image with Parallax Effect */}
@@ -41,6 +45,17 @@ export const Hero = () => {
             <p className="text-xs sm:text-base md:text-lg lg:text-xl text-gray-100 mb-4 sm:mb-6 md:mb-8 max-w-2xl leading-relaxed text-shadow-strong hidden sm:block">
               Join the fashion revolution with our curated collection of premium fabrics. From runway-inspired designs to timeless classics.
             </p>
+            
+            <Button 
+              onClick={() => navigate('/reviews')}
+              size="lg"
+              className="bg-white text-black hover:bg-white/90 font-semibold shadow-lg hover:shadow-xl transition-all"
+            >
+              <span className="flex items-center gap-2">
+                <span className="text-xl">📸</span>
+                See Our Happy Customers
+              </span>
+            </Button>
           </div>
         </div>
       </div>

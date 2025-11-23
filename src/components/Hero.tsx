@@ -28,7 +28,7 @@ export const Hero = () => {
             </p>
             <h1 className="font-playfair text-xl sm:text-3xl md:text-4xl lg:text-6xl xl:text-7xl font-bold mb-3 sm:mb-4 md:mb-6 text-white leading-tight text-shadow-strong">
               Elevate Your Style<br className="hidden sm:block" />
-              <span className="text-white">With The Best</span>
+              <span className="text-white"> With The Best</span>
             </h1>
             
             {/* Elegant Slogan */}

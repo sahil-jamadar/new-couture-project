@@ -24,7 +24,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 // Constants
-const CATEGORIES = ["Shirt Fabrics", "Trouser Fabrics", "Indo-Western", "Wedding Outfit"];
+const CATEGORIES = ["Shirt Fabrics", "Trouser Fabrics", "Indo-Western" ];
 const MAX_PRODUCTS_PER_CATEGORY = 8;
 
 const Index = () => {

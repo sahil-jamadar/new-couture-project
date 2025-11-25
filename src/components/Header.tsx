@@ -152,10 +152,10 @@ export const Header = ({ cartItemCount, onSearchChange }: HeaderProps) => {
                       </div>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={() => navigate('/profile')}>
+                    {/* <DropdownMenuItem onClick={() => navigate('/profile')}>
                       <User className="mr-2 h-4 w-4" />
                       <span>Profile</span>
-                    </DropdownMenuItem>
+                    </DropdownMenuItem> */}
                     <DropdownMenuItem onClick={() => navigate('/orders')}>
                       <Package className="mr-2 h-4 w-4" />
                       <span>My Orders</span>

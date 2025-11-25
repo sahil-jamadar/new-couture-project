@@ -48,12 +48,12 @@ export const Hero = () => {
             
             <Button 
               onClick={() => navigate('/reviews')}
-              size="lg"
-              className="bg-white text-black hover:bg-white/90 font-semibold shadow-lg hover:shadow-xl transition-all"
+              size="sm"
+              className="bg-white text-black hover:bg-white/90 font-semibold shadow-lg hover:shadow-xl transition-all sm:h-9 sm:px-4 sm:py-0 md:h-10 md:px-6 lg:h-11 lg:px-8"
             >
-              <span className="flex items-center gap-2">
-                <span className="text-xl">📸</span>
-                See Our Happy Customers
+              <span className="flex items-center gap-1 sm:gap-2">
+                <span className="text-base sm:text-l md:text-xl">📸</span>
+                <span className="text-xs sm:text-xs md:text-base">See Our Happy Customers</span>
               </span>
             </Button>
           </div>

@@ -175,103 +175,104 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-hero flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-hero flex items-center justify-center p-3 sm:p-4 md:p-6 lg:p-8 relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 bg-gradient-premium opacity-5"></div>
-      <div className="absolute top-20 left-20 w-72 h-72 bg-primary/10 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-20 right-20 w-96 h-96 bg-accent/10 rounded-full blur-3xl"></div>
+      <div className="absolute top-10 left-10 sm:top-20 sm:left-20 w-48 h-48 sm:w-72 sm:h-72 bg-primary/10 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-10 right-10 sm:bottom-20 sm:right-20 w-64 h-64 sm:w-96 sm:h-96 bg-accent/10 rounded-full blur-3xl"></div>
       
       {/* Back Button */}
       <Button
         variant="ghost"
         onClick={() => navigate('/')}
-        className="absolute top-6 left-6 gap-2 text-muted-foreground hover:text-foreground z-10"
+        className="absolute top-3 left-3 sm:top-4 sm:left-4 md:top-6 md:left-6 gap-1 sm:gap-2 text-xs sm:text-sm text-muted-foreground hover:text-foreground z-10 px-2 sm:px-3 py-1.5 sm:py-2"
       >
-        <ArrowLeft className="h-4 w-4" />
-        Back to Home
+        <ArrowLeft className="h-3 w-3 sm:h-4 sm:w-4" />
+        <span className="hidden xs:inline">Back to Home</span>
+        <span className="xs:hidden">Back</span>
       </Button>
 
       {/* Main Content */}
-      <div className="w-full max-w-md relative z-10">
+      <div className="w-full max-w-[95%] xs:max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl relative z-10">
         {/* Header */}
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <Sparkles className="h-8 w-8 text-primary" />
-            <h1 className="text-3xl font-playfair font-bold text-gradient-purple">
+        <div className="text-center mb-4 sm:mb-6 md:mb-8">
+          <div className="flex items-center justify-center gap-1.5 sm:gap-2 mb-2 sm:mb-3 md:mb-4">
+            <Sparkles className="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 text-primary" />
+            <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-playfair font-bold text-gradient-purple">
               The Coutures
             </h1>
           </div>
-          <p className="text-muted-foreground text-lg">
+          <p className="text-muted-foreground text-sm sm:text-base md:text-lg px-2">
             Welcome to premium fabric collections
           </p>
         </div>
 
         {/* Auth Card */}
         <Card className="bg-card/95 backdrop-blur-md shadow-premium border-border/50">
-          <CardHeader className="text-center pb-4">
-            <CardTitle className="text-2xl font-semibold text-foreground">
+          <CardHeader className="text-center pb-3 sm:pb-4 px-4 sm:px-6 pt-4 sm:pt-6">
+            <CardTitle className="text-lg sm:text-xl md:text-2xl font-semibold text-foreground">
               Join Our Fashion Community
             </CardTitle>
-            <CardDescription className="text-muted-foreground">
+            <CardDescription className="text-xs sm:text-sm md:text-base text-muted-foreground mt-1 sm:mt-2">
               Access exclusive fabric collections and personalized recommendations
             </CardDescription>
           </CardHeader>
           
-          <CardContent>
+          <CardContent className="px-4 sm:px-6 pb-4 sm:pb-6">
             <Tabs defaultValue="login" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 mb-6 bg-muted/50">
-                <TabsTrigger value="login" className="data-[state=active]:bg-background">
+              <TabsList className="grid w-full grid-cols-2 mb-4 sm:mb-5 md:mb-6 bg-muted/50 h-10">
+                <TabsTrigger value="login" className="data-[state=active]:bg-background text-xs sm:text-sm">
                   Sign In
                 </TabsTrigger>
-                <TabsTrigger value="register" className="data-[state=active]:bg-background">
+                <TabsTrigger value="register" className="data-[state=active]:bg-background text-xs sm:text-sm">
                   Create Account
                 </TabsTrigger>
               </TabsList>
 
-              <TabsContent value="login" className="space-y-6">
-                <form onSubmit={handleLogin} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="login-email" className="text-sm font-medium">Email</Label>
+              <TabsContent value="login" className="space-y-4 sm:space-y-5 md:space-y-6 mt">
+                <form onSubmit={handleLogin} className="space-y-3 sm:space-y-4">
+                  <div className="space-y-1.5 sm:space-y-2">
+                    <Label htmlFor="login-email" className="text-xs sm:text-sm font-medium">Email</Label>
                     <div className="relative">
-                      <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                      <Mail className="absolute left-2.5 sm:left-3 top-2.5 sm:top-3 h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
                       <Input
                         id="login-email"
                         type="email"
                         placeholder="Enter your email"
                         value={loginData.email}
                         onChange={(e) => setLoginData({...loginData, email: e.target.value})}
-                        className="pl-10 h-12"
+                        className="pl-8 sm:pl-10 h-10 sm:h-11 md:h-12 text-sm sm:text-base"
                         required
                       />
                     </div>
                   </div>
                   
-                  <div className="space-y-2">
-                    <Label htmlFor="login-password" className="text-sm font-medium">Password</Label>
+                  <div className="space-y-1.5 sm:space-y-2">
+                    <Label htmlFor="login-password" className="text-xs sm:text-sm font-medium">Password</Label>
                     <div className="relative">
-                      <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                      <Lock className="absolute left-2.5 sm:left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
                       <Input
                         id="login-password"
                         type={showPassword ? "text" : "password"}
                         placeholder="Enter your password"
                         value={loginData.password}
                         onChange={(e) => setLoginData({...loginData, password: e.target.value})}
-                        className="pl-10 pr-10 h-12"
+                        className="pl-8 sm:pl-10 pr-9 sm:pr-10 h-10 sm:h-11 md:h-12 text-sm sm:text-base"
                         required
                       />
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
+                        className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground p-0.5"
                       >
-                        {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                        {showPassword ? <EyeOff className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> : <Eye className="h-3.5 w-3.5 sm:h-4 sm:w-4" />}
                       </button>
                     </div>
                   </div>
                   
                   <Button 
                     type="submit" 
-                    className="w-full h-12 bg-gradient-premium text-primary-foreground font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+                    className="w-full h-10 sm:h-11 md:h-12 text-sm sm:text-base bg-gradient-premium text-primary-foreground font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
                     disabled={isLoading}
                   >
                     {isLoading ? "Signing in..." : "Sign In"}
@@ -282,7 +283,7 @@ export default function Login() {
                   <div className="absolute inset-0 flex items-center">
                     <span className="w-full border-t border-border" />
                   </div>
-                  <div className="relative flex justify-center text-xs uppercase">
+                  <div className="relative flex justify-center text-[10px] sm:text-xs uppercase">
                     <span className="bg-card px-2 text-muted-foreground">Or continue with</span>
                   </div>
                 </div>
@@ -291,97 +292,97 @@ export default function Login() {
                   type="button"
                   variant="outline"
                   onClick={handleGoogleSignIn}
-                  className="w-full h-12 border-border/50 hover:bg-accent"
+                  className="w-full h-10 sm:h-11 md:h-12 text-sm sm:text-base border-border/50 hover:bg-accent"
                   disabled={isLoading}
                 >
-                  <Chrome className="mr-2 h-5 w-5" />
+                  <Chrome className="mr-1.5 sm:mr-2 h-4 w-4 sm:h-5 sm:w-5" />
                   Continue with Google
                 </Button>
               </TabsContent>
 
-              <TabsContent value="register" className="space-y-6">
-                <form onSubmit={handleRegister} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="register-name" className="text-sm font-medium">Full Name</Label>
+              <TabsContent value="register" className="space-y-4 sm:space-y-5 md:space-y-6">
+                <form onSubmit={handleRegister} className="space-y-3 sm:space-y-4">
+                  <div className="space-y-1.5 sm:space-y-2">
+                    <Label htmlFor="register-name" className="text-xs sm:text-sm font-medium">Full Name</Label>
                     <div className="relative">
-                      <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                      <User className="absolute left-2.5 sm:left-3 top-2.5 sm:top-3 h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
                       <Input
                         id="register-name"
                         type="text"
                         placeholder="Enter your full name"
                         value={registerData.fullName}
                         onChange={(e) => setRegisterData({...registerData, fullName: e.target.value})}
-                        className="pl-10 h-12"
+                        className="pl-8 sm:pl-10 h-10 sm:h-11 md:h-12 text-sm sm:text-base"
                         required
                       />
                     </div>
                   </div>
                   
-                  <div className="space-y-2">
-                    <Label htmlFor="register-email" className="text-sm font-medium">Email</Label>
+                  <div className="space-y-1.5 sm:space-y-2">
+                    <Label htmlFor="register-email" className="text-xs sm:text-sm font-medium">Email</Label>
                     <div className="relative">
-                      <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                      <Mail className="absolute left-2.5 sm:left-3 top-2.5 sm:top-3 h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
                       <Input
                         id="register-email"
                         type="email"
                         placeholder="Enter your email"
                         value={registerData.email}
                         onChange={(e) => setRegisterData({...registerData, email: e.target.value})}
-                        className="pl-10 h-12"
+                        className="pl-8 sm:pl-10 h-10 sm:h-11 md:h-12 text-sm sm:text-base"
                         required
                       />
                     </div>
                   </div>
                   
-                  <div className="space-y-2">
-                    <Label htmlFor="register-password" className="text-sm font-medium">Password</Label>
+                  <div className="space-y-1.5 sm:space-y-2">
+                    <Label htmlFor="register-password" className="text-xs sm:text-sm font-medium">Password</Label>
                     <div className="relative">
-                      <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                      <Lock className="absolute left-2.5 sm:left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
                       <Input
                         id="register-password"
                         type={showPassword ? "text" : "password"}
                         placeholder="Create a password"
                         value={registerData.password}
                         onChange={(e) => setRegisterData({...registerData, password: e.target.value})}
-                        className="pl-10 pr-10 h-12"
+                        className="pl-8 sm:pl-10 pr-9 sm:pr-10 h-10 sm:h-11 md:h-12 text-sm sm:text-base"
                         required
                       />
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
+                        className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground p-0.5"
                       >
-                        {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                        {showPassword ? <EyeOff className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> : <Eye className="h-3.5 w-3.5 sm:h-4 sm:w-4" />}
                       </button>
                     </div>
                   </div>
                   
-                  <div className="space-y-2">
-                    <Label htmlFor="confirm-password" className="text-sm font-medium">Confirm Password</Label>
+                  <div className="space-y-1.5 sm:space-y-2">
+                    <Label htmlFor="confirm-password" className="text-xs sm:text-sm font-medium">Confirm Password</Label>
                     <div className="relative">
-                      <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                      <Lock className="absolute left-2.5 sm:left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
                       <Input
                         id="confirm-password"
                         type={showConfirmPassword ? "text" : "password"}
                         placeholder="Confirm your password"
                         value={registerData.confirmPassword}
                         onChange={(e) => setRegisterData({...registerData, confirmPassword: e.target.value})}
-                        className="pl-10 pr-10 h-12"
+                        className="pl-8 sm:pl-10 pr-9 sm:pr-10 h-10 sm:h-11 md:h-12 text-sm sm:text-base"
                         required
                       />
                       <button
                         type="button"
                         onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                        className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
+                        className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground p-0.5"
                       >
-                        {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                        {showConfirmPassword ? <EyeOff className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> : <Eye className="h-3.5 w-3.5 sm:h-4 sm:w-4" />}
                       </button>
                     </div>
                   </div>
                   
                   <Button 
                     type="submit" 
-                    className="w-full h-12 bg-gradient-premium text-primary-foreground font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+                    className="w-full h-10 sm:h-11 md:h-12 text-sm sm:text-base bg-gradient-premium text-primary-foreground font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
                     disabled={isLoading}
                   >
                     {isLoading ? "Creating Account..." : "Create Account"}
@@ -392,7 +393,7 @@ export default function Login() {
                   <div className="absolute inset-0 flex items-center">
                     <span className="w-full border-t border-border" />
                   </div>
-                  <div className="relative flex justify-center text-xs uppercase">
+                  <div className="relative flex justify-center text-[10px] sm:text-xs uppercase">
                     <span className="bg-card px-2 text-muted-foreground">Or continue with</span>
                   </div>
                 </div>
@@ -401,10 +402,10 @@ export default function Login() {
                   type="button"
                   variant="outline"
                   onClick={handleGoogleSignIn}
-                  className="w-full h-12 border-border/50 hover:bg-accent"
+                  className="w-full h-10 sm:h-11 md:h-12 text-sm sm:text-base border-border/50 hover:bg-accent"
                   disabled={isLoading}
                 >
-                  <Chrome className="mr-2 h-5 w-5" />
+                  <Chrome className="mr-1.5 sm:mr-2 h-4 w-4 sm:h-5 sm:w-5" />
                   Continue with Google
                 </Button>
               </TabsContent>
@@ -413,7 +414,7 @@ export default function Login() {
         </Card>
         
         {/* Footer */}
-        <p className="text-center text-xs text-muted-foreground mt-6">
+        <p className="text-center text-[10px] sm:text-xs text-muted-foreground mt-3 sm:mt-4 md:mt-6 px-2">
           By continuing, you agree to our Terms of Service and Privacy Policy
         </p>
       </div>
